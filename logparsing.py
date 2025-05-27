@@ -45,7 +45,7 @@ def createBatchesOfTen(content):
         batch.append(line)
         count=count+1
         if count == 10:
-            listOfBatches.append(batch)
+            listOfBatches.append(batch.copy())
             batch.clear()
             count = 0
     return listOfBatches
@@ -53,13 +53,14 @@ def createBatchesOfTen(content):
 #Creează o funcție care trimite un batch la API (POST request).
 def sendBatch(URL,batch):
     payload = json.dumps(batch)
+    print(payload)
     headers = {'Content-Type':'application/json'}
     response = requests.post(URL, data=payload, headers=headers)
     if response.status_code == 200:
         print("Batch-ul a fost trimis cu success")
     else:
         print("Batch-ul nu a reusit sa fie trimis. eroarea este ", response.status_code)
-    return response.status_code
+    return response
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Log parsing and forwarding")
@@ -68,4 +69,6 @@ if __name__ == "__main__":
     logfile = arguments.logfile
     logfile_content = readLogFile(logfile)
     listOfBatches=createBatchesOfTen(logfile_content)
-    sendBatch(listOfBatches[0])
+    URL = "https://httpbin.org/post"
+    response = sendBatch(URL,listOfBatches)
+    print(response.text)
