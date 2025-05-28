@@ -1,0 +1,9 @@
+[$(new Date().toISOString()}] $(line)
+[$(new Date().toISOString()}] $(line)
+[$(new Date().toISOString()}] $(line)
+[$(new Date().toISOString()}] $(line)
+[$(new Date().toISOString()}] $(line)
+[$(new Date().toISOString()}] $(line)
+[2025-05-28T21:12:47.801Z] Line number 0 ERROR
+[2025-05-28T21:12:47.801Z] Line number 5 ERROR
+[2025-05-28T21:12:47.801Z] Line number 6 CRITICAL
