@@ -1,0 +1,6 @@
+venv/
+
+.idea/
+
+log-receiver-api/node_modules
+

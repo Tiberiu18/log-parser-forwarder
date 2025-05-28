@@ -35,19 +35,33 @@ def createListFromContent(content):
     listOfLines=re.split(r'[\n]', content)
     return listOfLines
 
+def filterLinesForError(listOfLines):
+    filtered_lines = []
+    for line in listOfLines:
+        if "critical" in line.lower() or "error" in line.lower():
+            filtered_lines.append(line)
+    listOfLines.clear()
+    return filtered_lines
+
+
 
 def createBatchesOfTen(content):
-    listOfLines=createListFromContent(content)
+    listOfLines_raw=createListFromContent(content)
+    listOfLines_filtered = filterLinesForError(listOfLines_raw)
     listOfBatches = []
     count = 0
     batch=[]
-    for line in listOfLines:
+    for line in listOfLines_filtered:
         batch.append(line)
         count=count+1
         if count == 10:
             listOfBatches.append(batch.copy())
             batch.clear()
             count = 0
+    # Means the last batch will have a length lesser than 10, we do not want to skip these
+    if len(batch) > 0:
+        listOfBatches.append(batch.copy())
+        batch.clear()
     return listOfBatches
 
 #Creează o funcție care trimite un batch la API (POST request).
