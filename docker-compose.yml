@@ -1,0 +1,14 @@
+services:
+  log-receiver-api:
+    build: ./log-receiver-api
+    ports:
+      - "3000:3000"
+    networks: 
+      - lprnetwork
+
+  log-parser:
+    build: ./parser
+    depends_on:
+      - log-receiver-api
+    networks:
+      - lprnetwork

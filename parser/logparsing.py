@@ -83,6 +83,6 @@ if __name__ == "__main__":
     logfile = arguments.logfile
     logfile_content = readLogFile(logfile)
     listOfBatches=createBatchesOfTen(logfile_content)
-    URL = "http://localhost:3000/logs"
+    URL = "http://log-receiver-api:3000/logs"
     response = sendBatch(URL,listOfBatches)
     print(response.text)

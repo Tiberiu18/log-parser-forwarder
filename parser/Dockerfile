@@ -10,4 +10,8 @@ COPY sample.log ./
 
 COPY createSampleLogFile.py ./
 
+COPY requirements.txt ./
+
+RUN pip install --no-cache-dir -r requirements.txt
+
 CMD [ "python", "./logparsing.py", "./sample.log"]
