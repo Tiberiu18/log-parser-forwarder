@@ -24,6 +24,7 @@ jobs:
           ssh -o \
           StrictHostKeyChecking=no \
           "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" << EOF
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
           if [ -d "/home/${{ secrets.EC2_USER }}/log-parser-forwarder" ]; then
             cd /home/${{ secrets.EC2_USER }}/log-parser-forwarder
             git fetch origin
