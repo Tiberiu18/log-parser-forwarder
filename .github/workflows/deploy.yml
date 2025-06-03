@@ -29,9 +29,9 @@ jobs:
             git fetch origin
             git reset --hard origin/main
           else
-            git clone https://github.com/Tiberiu18/log-parser-forwarder.git
+            git clone git@github.com:Tiberiu18/log-parser-forwarder.git
           fi
           cd /home/${{ secrets.EC2_USER }}/log-parser-forwarder
-          docker compose pull
-          docker compose up -d --build
+          docker-compose pull
+          docker-compose up -d --build
           EOF
