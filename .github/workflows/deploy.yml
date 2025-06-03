@@ -18,17 +18,19 @@ jobs:
         uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
- 
-      - name: Debug SSH connection
-        run: |
-          echo "EC2_USER = ${{ secrets.EC2_USER }}"
-          echo "EC2_HOST = ${{ secrets.EC2_HOST }}"
 
       - name: Deploy to EC2
         run: |
           ssh -o \
           StrictHostKeyChecking=no \
           "${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}" << EOF
+          if [ -d "/home/${{ secrets.EC2_USER }}/log-parser-forwarder" ]; then
+            cd /home/${{ secrets.EC2_USER }}/log-parser-forwarder
+            git fetch origin
+            git reset --hard origin/main
+          else
+            git clone https://github.com/Tiberiu18/log-parser-forwarder.git
+          fi
           cd /home/${{ secrets.EC2_USER }}/log-parser-forwarder
           docker compose pull
           docker compose up -d --build
