@@ -1,0 +1,8 @@
+Next steps:
+🛠️ Rezumat plan pe etape:
+Etapă	Scop	Instrumente
+1. Extindere proiect	Viewer, DB, cron job	React, SQLite, Docker volumes
+2. Automatizare totală	Eliminare SSH, setup complet	Ansible
+3. Jenkins separat	CI/CD enterprise style	Jenkins, Jenkinsfile
+4. Observabilitate	Vizibilitate completă	Prometheus, Grafana, ELK
+5. Kubernetes (opțional)	Nivel avansat	Docker, Helm, k8s
