@@ -3,8 +3,22 @@ services:
     build: ./log-receiver-api
     ports:
       - "3000:3000"
+    volumes:
+      - ./logs:/app/logs
+    restart: always
     
   log-parser:
     build: ./parser
+    volumes:
+      - ./logs:/app/logs
     depends_on:
       - log-receiver-api
+    restart: always
+    command: ["sh", "-c", "while true; do python logparsing.py sample.log; sleep 60; done"]
+
+  dozzle:
+    image: amir20/dozzle:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
