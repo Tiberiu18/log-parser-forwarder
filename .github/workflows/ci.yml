@@ -27,6 +27,18 @@ jobs:
           curl -X POST http://localhost:3000/logs \
           -H "Content-Type: application/json" \
           -d '{"logs": [["Test log line"]]}'
+          response_file=$(mktemp)
+          status=$(curl --silent --output "$response_file" --write-out "%{http_code}" \
+          -X POST http://localhost:3000/logs \
+          -H "Content-Type: application/json" \
+          -d '{"logs": [["Test log line"]]}')
+          
+          echo "Response body:" && cat "$response_file"
+
+          if [ "$status" -ne 200 ]; then
+            echo "Request failed with HTTP status $status"
+          exit 1
+          fi
      
       - name: Clean containers
         run: docker compose down
