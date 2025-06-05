@@ -71,7 +71,7 @@ def sendBatch(URL,listOfBatches):
     headers = {'Content-Type':'application/json'}
     response = requests.post(URL, json=payload, headers=headers)
     if response.status_code == 200:
-        print("Batch-ul a fost trimis cu success")
+        print("Batch-ul a fost trimis cu succes")
     else:
         print("Batch-ul nu a reusit sa fie trimis. eroarea este ", response.status_code)
     return response

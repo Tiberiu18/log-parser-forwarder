@@ -4,3 +4,4 @@ venv/
 
 log-receiver-api/node_modules
 
+logs/
