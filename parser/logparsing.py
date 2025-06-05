@@ -1,26 +1,3 @@
-#🟦 1. Log Parser în Python
-#Scop: Script care:
-
-#Citește fișierul de log (app.log).
-
-#Filtrează doar liniile ce conțin „ERROR” sau „CRITICAL”.
-
-#Le împarte în grupuri de câte 10.
-
-#Le trimite către un endpoint /logs.
-
-#Tehnologii: Python + requests + json
-
-#📝 Pași:
-
-#Creează scriptul de citire și filtrare.
-
-#Creează o funcție care împarte lista în batch-uri.
-
-#Creează o funcție care trimite un batch la API (POST request).
-
-#Testează local cu un endpoint fals (ex: httpbin.org/post).
-
 import requests
 import json
 import argparse
@@ -64,16 +41,15 @@ def createBatchesOfTen(content):
         batch.clear()
     return listOfBatches
 
-#Creează o funcție care trimite un batch la API (POST request).
 def sendBatch(URL,listOfBatches):
     payload = {"logs": listOfBatches}
     print(payload)
     headers = {'Content-Type':'application/json'}
     response = requests.post(URL, json=payload, headers=headers)
     if response.status_code == 200:
-        print("Batch-ul a fost trimis cu succes")
+        print("Batch sent successfully.")
     else:
-        print("Batch-ul nu a reusit sa fie trimis. eroarea este ", response.status_code)
+        print("Batch failed to be sent. Error status code is: ", response.status_code)
     return response
 
 if __name__ == "__main__":
