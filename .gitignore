@@ -5,3 +5,8 @@ venv/
 log-receiver-api/node_modules
 
 logs/
+
+*.key
+*.pem
+*.pub
+ansible/files/github-key
