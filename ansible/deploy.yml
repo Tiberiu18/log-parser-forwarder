@@ -8,22 +8,13 @@
           state: present
         when: ansible_os_family == "Debian"
 
-      - name: Copy private GitHub key
-        copy:
-          src: files/github-deploy-key
-          dest: /home/ubuntu/.ssh/github-deploy-key
-          owner: ubuntu
-          group: ubuntu
-          mode: '0600'
-
       - name: Clone or update repo
         become_user: ubuntu
         git:
-          repo: git@github.com:Tiberiu18/log-parser-forwarder.git
+          repo: https://github.com/Tiberiu18/log-parser-forwarder.git
           dest: /home/ubuntu/log-parser-forwarder
           version: main
           update: yes
-          key_file: /home/ubuntu/.ssh/github-deploy-key
 
       - name: Install dependencies
         apt:
