@@ -7,12 +7,13 @@ This project showcases a simple log collection pipeline suitable for practicing 
 
 A third container, **dozzle**, provides a lightweight web UI to view container logs.
 
-The repository also contains Ansible playbooks used for deployment on a remote host.
+The repository also contains Ansible playbooks and Terraform configurations that can deploy the stack on a remote host.
 
 ## Requirements
 
 - Docker and Docker Compose
 - (optional) Ansible if you want to deploy remotely
+- (optional) Terraform for provisioning cloud resources
 
 ## Running locally
 
@@ -35,6 +36,20 @@ ansible-playbook ansible/deploy.yml -i ansible/inventory
 ```
 
 This makes it easy to spin up the environment on a cloud VM, such as an AWS EC2 instance.
+
+## Deploying with Terraform
+
+Terraform definitions are provided under the `terraform/` directory. The `project` configuration provisions an EC2 instance, installs Docker, clones this repository and starts the Compose stack automatically.
+
+To create the infrastructure:
+
+```bash
+cd terraform/project
+terraform init
+terraform apply
+```
+
+The public IP address of the instance will be printed as an output when the apply step completes. A minimal example is also available under `terraform/project_minimalistic` for experimentation.
 
 ## Project goals
 
