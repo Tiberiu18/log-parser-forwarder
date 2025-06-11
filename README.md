@@ -54,3 +54,14 @@ The public IP address of the instance will be printed as an output when the appl
 ## Project goals
 
 This project was built for learning purposes and demonstrates how Docker, basic CI checks and simple automation fit together. Feel free to adapt it further or integrate additional DevOps tooling.
+
+
+## Contributing
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+## Code of Conduct
+Participating in this project means adhering to our [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## License
+This software is available under the [Apache 2.0](LICENSE) license.
+
