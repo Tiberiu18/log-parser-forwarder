@@ -2,9 +2,12 @@ import requests
 import json
 import argparse
 import re
+import os
+import time
 from prometheus_client import Counter, start_http_server
 # Start /metrics at port 8000
 start_http_server(8000) # runs in a separate thread
+print("[INIT] Metrics server setup :8000; starting parsing loop...")
 
 batches_sent = Counter("batches_sent_total", "Log batches successfully sent")
 
@@ -71,8 +74,14 @@ if __name__ == "__main__":
     parser.add_argument("logfile")
     arguments = parser.parse_args()
     logfile = arguments.logfile
-    logfile_content = readLogFile(logfile)
-    listOfBatches=createBatchesOfTen(logfile_content)
-    URL = "http://log-receiver-api:3000/logs"
-    response = sendBatch(URL,listOfBatches)
-    print(response.text)
+    URL = os.getenv("API_URL", "http://log-receiver-api:3000/logs")
+    while True:
+        try:
+            logfile_content = readLogFile(logfile)
+            listOfBatches = createBatchesOfTen(logfile_content)
+            response = sendBatch(URL,listOfBatches)
+            print(response.text)
+        except Exception as ex:
+            # We already have parser_errors.inc(), so we'll just log now
+            print("[MAIN] Unhandled error:", exc)
+        time.sleep(60)

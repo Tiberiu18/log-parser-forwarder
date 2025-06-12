@@ -14,9 +14,10 @@ services:
     depends_on:
       - log-receiver-api
     restart: always
-    command: ["sh", "-c", "while true; do python logparsing.py sample.log; sleep 60; done"]
     ports:
       - "8000:8000"
+    environment:
+      - API_URL=${NODEJS_API_POST_URL}
 
   dozzle:
     image: amir20/dozzle:latest
