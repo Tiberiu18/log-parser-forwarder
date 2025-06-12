@@ -3,16 +3,34 @@ const asyncHandler = require("express-async-handler");
 const path = require("path");
 const fs = require("fs");
 const app = express();
-
+// Official Prometheus library for Node-js
+const client = require("prom-client");
 app.use(express.json());
 
 
+const collectDefault = client.collectDefaultMetrics;
+collectDefault(); // CPU, MEM etc. metrics, 
+// prometheus will see these metrics as process_cpu_user_seconds_total etc.
+
+// Defining a custom Container to count each request and keeps labels
+const httpReqs = new client.Counter(
+	{
+	name: "http_requests_total", 
+	help: "Total API calls",
+	labelNames: ["route", "method", "code"],
+	}
+);
+
 app.get("/", (req,res) => {
+    // Inc => increment, this basically increments the custom counter
+    httpReqs.inc({route: "/", method: "GET", code:200});
     res.send("API is running...");
 });
 
+
 app.post("/logs", asyncHandler(async(req,res)=> {
-    const {logs} = req.body
+    httpReqs.inc({ route: "/logs", method: "POST", code:200});
+    const {logs} = req.body;
     console.log(logs);
 
     // It has to be a list of lists
@@ -43,6 +61,16 @@ app.post("/logs", asyncHandler(async(req,res)=> {
 
 }))
 
+app.get("/metrics", async(req,res) => {
+	// Sets the right Content-Type (Prometheus text exposition format)
+	// Otherwise, Prometheus will have errors parsing this endpoint
+	res.set("Content-Type",client.register.contentType);
+	// gathers all metrics registered 
+	// default metrics, http_requests_total custom counter
+	const metrics = await client.register.metrics(); // this will return a string
+	res.end(metrics);
+
+});
 
 
 
