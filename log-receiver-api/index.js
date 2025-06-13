@@ -73,6 +73,10 @@ app.get("/metrics", async(req,res) => {
 });
 
 
+app.get("/health", async(req,res) => {
+	res.status(200).json({message: 'NodeJS API is up...'});
+});
+
 
 const PORT = process.env.PORT || 3000
 
