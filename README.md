@@ -5,7 +5,9 @@ This project showcases a simple log collection pipeline suitable for practicing 
 * **log-receiver-api** – a small Node.js server that accepts log batches over HTTP and appends them to a file.
 * **log-parser** – a Python script that reads a log file, filters only `ERROR` and `CRITICAL` lines, batches them and forwards the batches to the API.
 
-A third container, **dozzle**, provides a lightweight web UI to view container logs.
+Additional containers provide observability:
+* **dozzle** – a lightweight web UI to view container logs.
+* **Prometheus**, **Grafana** and **Alertmanager** – collect metrics and raise alerts for the services.
 
 The repository also contains Ansible playbooks and Terraform configurations that can deploy the stack on a remote host.
 
@@ -23,9 +25,13 @@ Build and start all services using Docker Compose:
 docker compose up --build
 ```
 
-The API will listen on `http://localhost:3000` and the Dozzle UI on `http://localhost:8080`.
+The API will listen on `http://localhost:3000`. Dozzle is available on `http://localhost:8080`, Prometheus on `http://localhost:9090`, Grafana on `http://localhost:3001`, and Alertmanager on `http://localhost:9093`.
 
 A sample log file is included in `parser/sample.log`. The parser container runs the script periodically and sends filtered lines to the API. Parsed logs are persisted under the `logs/` directory on the host.
+
+## Monitoring stack
+
+Prometheus scrapes metrics from both services. Grafana provides dashboards, while Alertmanager handles alert routing. Configuration files reside under `monitoring/` and are mounted into the containers. Set the `GRAFANA_ADMIN_PASSWORD` environment variable when starting the stack to control Grafana access.
 
 ## Deploying with Ansible
 
@@ -39,17 +45,17 @@ This makes it easy to spin up the environment on a cloud VM, such as an AWS EC2 
 
 ## Deploying with Terraform
 
-Terraform definitions are provided under the `terraform/` directory. The `project` configuration provisions an EC2 instance, installs Docker, clones this repository and starts the Compose stack automatically.
+Terraform definitions are provided under the `terraform/` directory. The `projectAWS` configuration provisions an EC2 instance, while `projectAzure` spins up a VM on Microsoft Azure. Both setups install Docker, clone this repository and start the Compose stack automatically.
 
 To create the infrastructure:
 
 ```bash
-cd terraform/project
+cd terraform/projectAWS  # or terraform/projectAzure
 terraform init
 terraform apply
 ```
 
-The public IP address of the instance will be printed as an output when the apply step completes. A minimal example is also available under `terraform/project_minimalistic` for experimentation.
+The public IP address will be printed as an output when the apply step completes. A minimal example is also available under `terraform/project_minimalisticAWS` for experimentation.
 
 ## Project goals
 
