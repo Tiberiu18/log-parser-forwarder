@@ -45,7 +45,7 @@ This makes it easy to spin up the environment on a cloud VM, such as an AWS EC2 
 
 ## Deploying with Terraform
 
-Terraform definitions are provided under the `terraform/` directory. The `projectAWS` configuration provisions an EC2 instance, while `projectAzure` spins up a VM on Microsoft Azure. Both setups install Docker, clone this repository and start the Compose stack automatically.
+Terraform definitions are provided under the `terraform/` directory. The `projectAWS` configuration provisions an EC2 instance, while `projectAzure` spins up a VM on Microsoft Azure. 
 
 To create the infrastructure:
 
@@ -61,6 +61,16 @@ The public IP address will be printed as an output when the apply step completes
 
 This project was built for learning purposes and demonstrates how Docker, basic CI checks and simple automation fit together. Feel free to adapt it further or integrate additional DevOps tooling.
 
+## 📸 Screenshots
+
+### ✅ Active alert in Prometheus
+![Prometheus Alerts](./screenshots/prometheus_alerts.png)
+
+### 🔔 Alert handled by AlertManager
+![Alertmanager](./screenshots/alertmanager.png)
+
+### 🧾 Container monitorization with Dozzle
+![Dozzle Logs](./screenshots/dozzle.png)
 
 ## Contributing
 We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
