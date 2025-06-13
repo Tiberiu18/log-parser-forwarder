@@ -2,6 +2,18 @@ import requests
 import json
 import argparse
 import re
+import os
+import time
+from prometheus_client import Counter, start_http_server
+# Start /metrics at port 8000
+start_http_server(8000) # runs in a separate thread
+print("[INIT] Metrics server setup :8000; starting parsing loop...")
+
+batches_sent = Counter("batches_sent_total", "Log batches successfully sent")
+
+parser_errors = Counter("parser_errors_total", "Errors encountered by the parser")
+
+
 def readLogFile(filename):
     with open(filename,"r") as logf:
         content = logf.read()
@@ -43,22 +55,33 @@ def createBatchesOfTen(content):
 
 def sendBatch(URL,listOfBatches):
     payload = {"logs": listOfBatches}
-    print(payload)
     headers = {'Content-Type':'application/json'}
-    response = requests.post(URL, json=payload, headers=headers)
-    if response.status_code == 200:
+    try:
+        response = requests.post(URL, json=payload, headers=headers, timeout=5)
+        # What is this for? Well, if status code is 200-299, won't do anything
+        # If it is 400-599, raises an exception requests.HTTPERROR
+        response.raise_for_status()
+        batches_sent.inc()
         print("Batch sent successfully.")
-    else:
-        print("Batch failed to be sent. Error status code is: ", response.status_code)
-    return response
+        return response
+    except requests.exceptions.RequestException as exc:
+        parser_errors.inc()
+        print(f"[ERROR] Batch failed: {exc}")
+        raise
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Log parsing and forwarding")
     parser.add_argument("logfile")
     arguments = parser.parse_args()
     logfile = arguments.logfile
-    logfile_content = readLogFile(logfile)
-    listOfBatches=createBatchesOfTen(logfile_content)
-    URL = "http://log-receiver-api:3000/logs"
-    response = sendBatch(URL,listOfBatches)
-    print(response.text)
+    URL = os.getenv("API_URL", "http://log-receiver-api:3000/logs")
+    while True:
+        try:
+            logfile_content = readLogFile(logfile)
+            listOfBatches = createBatchesOfTen(logfile_content)
+            response = sendBatch(URL,listOfBatches)
+            print(response.text)
+        except Exception as ex:
+            # We already have parser_errors.inc(), so we'll just log now
+            print("[MAIN] Unhandled error:", exc)
+        time.sleep(60)

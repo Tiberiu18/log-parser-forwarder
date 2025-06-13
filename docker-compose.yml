@@ -14,7 +14,10 @@ services:
     depends_on:
       - log-receiver-api
     restart: always
-    command: ["sh", "-c", "while true; do python logparsing.py sample.log; sleep 60; done"]
+    ports:
+      - "8000:8000"
+    environment:
+      - API_URL=${NODEJS_API_POST_URL}
 
   dozzle:
     image: amir20/dozzle:latest
@@ -22,3 +25,22 @@ services:
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - log-parser
+      - log-receiver-api
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    ports:
+      - "3001:3000"
+    depends_on:
+      - prometheus
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}

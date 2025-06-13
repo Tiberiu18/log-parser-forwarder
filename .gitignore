@@ -11,6 +11,8 @@ logs/
 *.pub
 ansible/files/github-key
 
+.env
+
 # Terraform
 .terraform/
 *.tfstate
@@ -18,3 +20,4 @@ ansible/files/github-key
 .terraform/
 .crash/
 terraform.tfvars
+
