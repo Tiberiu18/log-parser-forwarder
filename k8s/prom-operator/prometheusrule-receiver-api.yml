@@ -9,7 +9,7 @@ spec:
     - name: log-receiver-api.rules
       rules:
         - alert: APIIsDown
-          expr: up{job="log-receiver-api"} == 0
+          expr: up{job="log-receiver-api-service"} == 0
           for: 1m
           labels:
             severity: critical

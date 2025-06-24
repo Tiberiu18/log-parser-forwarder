@@ -3,16 +3,16 @@ kind: Deployment
 metadata:
   name: grafana-deployment
   labels:
-    app: grafana
+    app: grafana-deploy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: grafana
+      app: grafana-deploy
   template:
     metadata:
       labels: 
-        app: grafana
+        app: grafana-deploy
     spec:
       containers:
         - name: grafana

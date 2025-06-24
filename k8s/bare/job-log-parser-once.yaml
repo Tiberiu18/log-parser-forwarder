@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: log-parser-once
+spec:
+  template:
+    spec:
+      containers:
+        - name: log-parser
+          image: log-parser:latest
+          imagePullPolicy: Never
+          command: ["python", "/usr/app/src/logparsing_for_testing.py"]
+          args: ["sample.log"]
+      restartPolicy: Never

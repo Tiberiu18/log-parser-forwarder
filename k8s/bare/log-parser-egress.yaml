@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: log-parser-egress-to-api
+spec:
+  podSelector:
+    matchLabels:
+      app: log-parser
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: log-receiver-api
+      ports:
+        - protocol: TCP
+          port: 3000

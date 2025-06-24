@@ -9,7 +9,7 @@ spec:
     - name: log-parser.rules
       rules:
         - alert: ParserDown
-          expr: up{job="log-parser"} == 0
+          expr: up{job="log-parser-service"} == 0
           for: 2m
           labels:
             severity: critical
