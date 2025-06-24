@@ -8,7 +8,7 @@ data:
     alerting:
       alertmanagers:
         - static_configs:
-          - targets: ["alertmanager:9093"]
+          - targets: ["alertmanager-service:9093"]
 
     rule_files:
       - alerts.yml
@@ -17,11 +17,11 @@ data:
       - job_name: "log-receiver-api"
         metrics_path: /metrics
         static_configs:
-          - targets: ["log-receiver-api:3000"]
+          - targets: ["log-receiver-api-service:3000"]
 
       - job_name: "parser"
         static_configs:
-          - targets: ["log-parser:8000"]
+          - targets: ["log-parser-service:8000"]
 
 
 kind: ConfigMap
