@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: grafana-statefulset
+spec:
+  serviceName: grafana-stateful
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana-stateful
+  template:
+    metadata:
+      labels:
+        app: grafana-stateful
+    spec:
+      containers:
+        - name: grafana
+          image: grafana/grafana-oss
+          volumeMounts:
+            - name: grafana-storage
+              mountPath: /var/lib/grafana
+  volumeClaimTemplates:
+    - metadata:
+        name: grafana-storage
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 500Mi
+
