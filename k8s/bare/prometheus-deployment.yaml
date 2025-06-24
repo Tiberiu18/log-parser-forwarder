@@ -17,9 +17,9 @@ spec:
       containers:
         - name: prometheus
           image: prom/prometheus:latest
+          imagePullPolicy: Always
           args:
             - "--config.file=/etc/prometheus/prometheus.yml"
-            - "--rule.files=/etc/prometheus/alerts.yml"
           volumeMounts:
             - name: config-volume
               mountPath: /etc/prometheus/prometheus.yml

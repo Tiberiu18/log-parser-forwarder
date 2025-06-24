@@ -1,9 +1,7 @@
 apiVersion: v1
 data:
-  .env: |
-    # Development .env file - safe to commit
-    NODEJS_API_POST_URL=http://log-receiver-api:3000/logs
-    GRAFANA_ADMIN_PASSWORD=admin
+  GRAFANA_ADMIN_PASSWORD: admin
+  NODEJS_API_POST_URL: http://log-receiver-api:3000/logs
 kind: ConfigMap
 metadata:
   creationTimestamp: null
