@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-receiver-api-deployment
+  labels:
+    app: log-receiver-api
+spec:
+  replicas: {{ .Values.log_receiver_api.replicas }}
+  selector:
+    matchLabels:
+      app: log-receiver-api
+  template:
+    metadata:
+      labels:
+        app: log-receiver-api
+    spec:
+      containers:
+        - name: log-receiver-api
+          image: {{ .Values.log_receiver_api.image }}
+          imagePullPolicy: {{ .Values.log_receiver_api.pullPolicy }}
+          ports:
+            - containerPort: 3000

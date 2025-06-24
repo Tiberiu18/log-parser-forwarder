@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alertmanager-deployment
+  labels:
+    app: alertmanager
+spec:
+  replicas: {{ .Values.alertmanager.replicas }}
+  selector:
+    matchLabels:
+      app: alertmanager
+  template:
+    metadata:
+      labels:
+        app: alertmanager
+    spec:
+      containers:
+        - name: alertmanager
+          image: {{ .Values.alertmanager.image }}
+          imagePullPolicy: {{ .Values.alertmanager.pullPolicy }}
+          args:
+            - "--config.file=/etc/alertmanager/alertmanager.yml"
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/alertmanager
+          ports:
+            - containerPort: 9093
+      volumes:
+        - name: config-volume
+          configMap:
+            name: alertmanager-config
