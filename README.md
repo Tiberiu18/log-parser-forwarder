@@ -16,6 +16,7 @@ The repository also contains Ansible playbooks and Terraform configurations that
 - Docker and Docker Compose
 - (optional) Ansible if you want to deploy remotely
 - (optional) Terraform for provisioning cloud resources
+- (optional) kubectl and Helm for running on Kubernetes
 
 ## Running locally
 
@@ -27,7 +28,24 @@ docker compose up --build
 
 The API will listen on `http://localhost:3000`. Dozzle is available on `http://localhost:8080`, Prometheus on `http://localhost:9090`, Grafana on `http://localhost:3001`, and Alertmanager on `http://localhost:9093`.
 
+
 A sample log file is included in `parser/sample.log`. The parser container runs the script periodically and sends filtered lines to the API. Parsed logs are persisted under the `logs/` directory on the host.
+
+## Running on Kubernetes
+
+Kubernetes manifests and a sample Helm chart live under the `k8s/` folder. The `bare/` directory contains plain YAML resources that can be applied directly:
+
+```bash
+kubectl apply -f k8s/bare
+```
+
+Alternatively, install the Helm chart:
+
+```bash
+helm install log-platform k8s/charts/log-platform
+```
+
+The manifests cover the application deployments as well as monitoring rules using the Prometheus Operator.
 
 ## Monitoring stack
 
@@ -45,15 +63,17 @@ This makes it easy to spin up the environment on a cloud VM, such as an AWS EC2 
 
 ## Deploying with Terraform
 
-Terraform definitions are provided under the `terraform/` directory. The `projectAWS` configuration provisions an EC2 instance, while `projectAzure` spins up a VM on Microsoft Azure. 
+Terraform definitions are provided under the `terraform/` directory. The `projectAWS` setup has been split into reusable modules that create EC2 instances, VPC networking, IAM users and an S3 bucket hosting a static site. `projectAzure` still provisions a VM on Microsoft Azure.
 
 To create the infrastructure:
 
 ```bash
-cd terraform/projectAWS  # or terraform/projectAzure
+cd terraform/projectAWS/modules/ec2  # or any other module
 terraform init
-terraform apply
+terraform apply -var-file=../environments/dev/main.tfvars
 ```
+
+Each module is self contained, so you can provision only the pieces you need by running the commands from the corresponding directory.
 
 The public IP address will be printed as an output when the apply step completes. A minimal example is also available under `terraform/project_minimalisticAWS` for experimentation.
 
