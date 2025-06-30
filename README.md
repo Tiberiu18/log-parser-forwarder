@@ -63,7 +63,7 @@ This makes it easy to spin up the environment on a cloud VM, such as an AWS EC2 
 
 ## Deploying with Terraform
 
-Terraform definitions are provided under the `terraform/` directory. The `projectAWS` setup has been split into reusable modules that create EC2 instances, VPC networking, IAM users and an S3 bucket hosting a static site. `projectAzure` still provisions a VM on Microsoft Azure.
+Terraform definitions are provided under the `terraform/` directory. The `projectAWS` setup has been split into reusable modules that create EC2 instances, VPC networking and an S3 bucket hosting a static site. IAM is not implemented yet, plans are to provision AWS Route53, AWS ELB, AWS ECS and AWS EKS too. `projectAzure` still provisions a VM on Microsoft Azure.
 
 To create the infrastructure:
 
