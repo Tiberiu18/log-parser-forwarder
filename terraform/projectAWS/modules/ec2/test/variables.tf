@@ -30,22 +30,6 @@ variable "availability_zone" {
   type        = string
 
 }
-
-variable "vpc_id" {
-  type = string
-}
-
-variable "public_subnet_id" {
-
-  type = string
-
-}
-
-variable "security_group_ids" {
-  description = "List of security group IDs to associate with the EC2 instance"
-  type        = list(string)
-}
-
 variable "user_data" {
   description = "The user_data script content"
   default     = ""
@@ -62,8 +46,22 @@ variable "attach_ebs" {
 variable "ebs_volume_size" {
   description = "Size of EBS volume in GB"
   type        = number
-  default        = 2
+  default     = 2
 
 }
+
+variable "public_subnet_cidr_block" {
+  description = "Public subnet CIDR block"
+  type        = string
+  default     = "10.0.1.0/24"
+}
+
+variable "vpc_cidr_block" {
+  description = "VPC CIDR block"
+  type        = string
+  default     = "10.0.0.0/16"
+}
+
+
 
 

@@ -33,3 +33,9 @@ output "nat_gateway_id" {
   description = "Nat Gateway ID"
   value       = aws_nat_gateway.nat.id
 }
+
+output "security_group_id" {
+	description = "Allow ssh security group"
+	value = aws_security_group.allow_ssh.id
+
+}
