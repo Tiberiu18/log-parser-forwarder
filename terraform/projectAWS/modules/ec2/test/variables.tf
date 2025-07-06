@@ -37,18 +37,6 @@ variable "user_data" {
 
 }
 
-variable "attach_ebs" {
-  description = "Whether to attach an EBS volume"
-  type        = bool
-  default     = false
-}
-
-variable "ebs_volume_size" {
-  description = "Size of EBS volume in GB"
-  type        = number
-  default     = 2
-
-}
 
 variable "public_subnet_cidr_block" {
   description = "Public subnet CIDR block"

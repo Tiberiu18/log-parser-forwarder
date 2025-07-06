@@ -10,23 +10,3 @@ resource "aws_instance" "log-parser-forwarder" {
   tags                   = var.tags
 }
 
-resource "aws_ebs_volume" "extra" {
-  count             = var.attach_ebs ? 1 : 0
-  availability_zone = var.availability_zone
-  size              = var.ebs_volume_size
-  tags = merge(var.tags, {
-    Name = "extra-volume"
-  })
-
-}
-
-resource "aws_volume_attachment" "attach" {
-  count       = var.attach_ebs ? 1 : 0
-  device_name = "/dev/xvdf"
-  volume_id   = aws_ebs_volume.extra[0].id
-  instance_id = aws_instance.log-parser-forwarder.id
-
-
-}
-
-

@@ -76,15 +76,9 @@ module "ec2" {
   public_subnet_id   = aws_subnet.test_public_subnet.id
   security_group_ids = [aws_security_group.test_sg.id]
 
-  attach_ebs      = true
-  ebs_volume_size = 3
-
 
   user_data = file("${path.module}/user_data.sh")
-  tags = merge(var.tags, {
-    EBS_Attached = "Yes"
-  })
-
+ tags = var.tags
 }
 
 

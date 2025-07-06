@@ -53,17 +53,3 @@ variable "user_data" {
 
 }
 
-variable "attach_ebs" {
-  description = "Whether to attach an EBS volume"
-  type        = bool
-  default     = false
-}
-
-variable "ebs_volume_size" {
-  description = "Size of EBS volume in GB"
-  type        = number
-  default        = 2
-
-}
-
-
