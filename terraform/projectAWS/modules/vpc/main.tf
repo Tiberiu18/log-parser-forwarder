@@ -10,7 +10,7 @@ resource "aws_vpc" "myvpc" {
 
 resource "aws_subnet" "public_subnet" {
   vpc_id = aws_vpc.myvpc.id
-
+  availability_zone = var.availability_zone
   cidr_block = var.public_subnet_cidrs[0]
 
   map_public_ip_on_launch = true
@@ -22,7 +22,7 @@ resource "aws_subnet" "public_subnet" {
 
 resource "aws_subnet" "private_subnet" {
   vpc_id = aws_vpc.myvpc.id
-
+  availability_zone = var.availability_zone
   cidr_block              = var.private_subnet_cidrs[0]
   map_public_ip_on_launch = false
 
@@ -89,6 +89,7 @@ resource "aws_route_table_association" "private_assoc" {
 
 
 resource "aws_security_group" "allow_ssh" {
+	vpc_id = aws_vpc.myvpc.id
 	ingress {
 		description = "Allow SSH from anywhere"
 		from_port = 22

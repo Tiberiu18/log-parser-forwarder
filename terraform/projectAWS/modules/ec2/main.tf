@@ -6,7 +6,7 @@ resource "aws_instance" "log-parser-forwarder" {
   availability_zone      = var.availability_zone
   subnet_id              = var.public_subnet_id
   vpc_security_group_ids = var.security_group_ids
-  user_data              = var.user_data != "" ? var.user_data : null
+  user_data              = var.user_data_path != "" ? var.user_data_path : null
   tags                   = var.tags
 }
 

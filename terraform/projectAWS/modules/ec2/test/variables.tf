@@ -30,8 +30,8 @@ variable "availability_zone" {
   type        = string
 
 }
-variable "user_data" {
-  description = "The user_data script content"
+variable "user_data_path" {
+  description = "The user_data script path"
   default     = ""
   type        = string
 

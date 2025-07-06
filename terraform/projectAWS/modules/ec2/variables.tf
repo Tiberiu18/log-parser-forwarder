@@ -1,11 +1,3 @@
-variable "region" {
-  default = "eu-north-1"
-}
-
-variable "profile" {
-  description = "Profile for AWS credentials"
-}
-
 variable "instance_type" {
   default = "t3.micro"
 }
@@ -30,11 +22,6 @@ variable "availability_zone" {
   type        = string
 
 }
-
-variable "vpc_id" {
-  type = string
-}
-
 variable "public_subnet_id" {
 
   type = string
@@ -46,10 +33,11 @@ variable "security_group_ids" {
   type        = list(string)
 }
 
-variable "user_data" {
-  description = "The user_data script content"
+variable "user_data_path" {
+  description = "The user_data script path"
   default     = ""
   type        = string
 
 }
+
 
