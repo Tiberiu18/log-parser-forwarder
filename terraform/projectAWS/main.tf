@@ -44,4 +44,15 @@ module "ebs" {
 
 }
 
+module "s3" {
+  source               = "./modules/s3"
+  bucket_name          = var.bucket_name
+  tags                 = var.tags
+  versioning_status    = var.versioning_status
+  s3_object_ownership  = var.s3_object_ownership
+  enable_public_access = var.enable_public_access
+  enable_website       = var.enable_website
+  index_document       = var.index_document
+  error_document       = var.error_document
 
+}

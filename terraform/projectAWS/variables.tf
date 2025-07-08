@@ -50,7 +50,7 @@ variable "availability_zone" {
 
 variable "user_data_path" {
   type        = string
-  default = ""
+  default     = ""
   description = "User data script content or file path"
 }
 
@@ -74,6 +74,44 @@ variable "device_name" {
   type        = string
   description = "Device name to attach the EBS volume as (e.g. /dev/sdf)"
 }
+
+
+# S3 Module
+variable "bucket_name" {
+  type        = string
+  description = "Bucket name that will be created"
+}
+
+variable "versioning_status" {
+  type        = string
+  description = "Versioning status of the bucket i.e. Enabled, Disabled, Suspended"
+}
+
+variable "s3_object_ownership" {
+  type        = string
+  description = "Type of object ownership for the S3 Bucket"
+}
+
+variable "enable_public_access" {
+  type        = bool
+  description = "Whether or not to enable public access to the S3 Bucket"
+}
+
+variable "enable_website" {
+  type        = bool
+  description = "Whether or not to enable website or not for the S3 Bucket"
+}
+
+variable "index_document" {
+  type        = string
+  description = "Path to the index document of the S3 Bucket static site"
+}
+
+variable "error_document" {
+  type        = string
+  description = "Path to the error document of the S3 Bucket static site"
+}
+
 # Common
 variable "tags" {
   type        = map(string)

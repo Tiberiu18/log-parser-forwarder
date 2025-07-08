@@ -63,6 +63,8 @@ resource "aws_s3_bucket_policy" "public_policy" {
 
   })
 
+	depends_on = [aws_s3_bucket_public_access_block.pab_deactivation]
+
 }
 
 resource "aws_s3_bucket_website_configuration" "site" {

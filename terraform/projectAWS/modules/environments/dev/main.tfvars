@@ -18,3 +18,12 @@ tags = {
 	Project = "log-parser-forward"
 	Environment = "DEV"
 }
+
+# S3 Bucket variables
+bucket_name="tibi-bucket-07072025"
+versioning_status="Disabled"
+s3_object_ownership="BucketOwnerPreferred"
+enable_public_access=true
+enable_website=true
+index_document="index.html"
+error_document="404.html"
