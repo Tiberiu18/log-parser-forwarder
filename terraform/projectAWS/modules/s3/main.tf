@@ -22,12 +22,12 @@ rule {
 
 # Public access block deactivation
 resource "aws_s3_bucket_public_access_block" "pab_deactivation" {
-count = var.enable_public_access ? 0 : 1
+count = var.enable_public_access ? 1 : 0
 bucket = aws_s3_bucket.my_bucket.id
-block_public_acls = true
-ignore_public_acls = true
-block_public_policy = true
-restrict_public_buckets = true
+block_public_acls = false
+ignore_public_acls = false
+block_public_policy = false
+restrict_public_buckets = false
 
 }
 

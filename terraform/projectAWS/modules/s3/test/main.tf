@@ -4,7 +4,7 @@ provider "aws" {
 
 module "s3" {
   source               = "../"
-  bucket_name          = "tibi-bucket-29062025"
+  bucket_name          = "tibi-bucket-07072025"
   tags                 = { Environment = "test" }
   versioning_status    = "Disabled"
   s3_object_ownership  = "BucketOwnerPreferred"
