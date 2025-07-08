@@ -23,7 +23,7 @@ output "bucket_tags" {
 
 output "website_endpoint" {
 description = "HTTP URL of static website"
-	value = aws_s3_bucket_website_configuration.site.website_endpoint
+	value = aws_s3_bucket_website_configuration.site[0].website_endpoint
 
 }
 

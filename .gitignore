@@ -6,11 +6,12 @@ log-receiver-api/node_modules
 
 logs/
 
+# Ignore SSH keys
 *.key
 *.pem
 *.pub
 ansible/files/github-key
-
+id_rsa
 
 # Terraform
 .terraform/
@@ -19,4 +20,6 @@ ansible/files/github-key
 .terraform/
 .crash/
 terraform.tfvars
+*plan*
+.terraform.lock.hcl
 
