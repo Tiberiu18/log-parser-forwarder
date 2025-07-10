@@ -20,7 +20,9 @@ tags = {
 }
 
 # S3 Bucket variables
-bucket_name="tibi-bucket-07072025"
+#bucket_name="tibi-bucket-07072025"
+bucket_names = ["standard-logs-bucket",
+"parsed-logs-bucket"]
 versioning_status="Disabled"
 s3_object_ownership="BucketOwnerPreferred"
 enable_public_access=true

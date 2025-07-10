@@ -77,9 +77,15 @@ variable "device_name" {
 
 
 # S3 Module
-variable "bucket_name" {
-  type        = string
-  description = "Bucket name that will be created"
+#variable "bucket_name" {
+# type        = string
+#description = "Bucket name that will be created"
+#}
+
+variable "bucket_names" {
+  type        = list(string)
+  description = "List of bucket names that will be created"
+
 }
 
 variable "versioning_status" {
