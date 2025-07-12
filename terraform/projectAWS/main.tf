@@ -46,7 +46,8 @@ module "ebs" {
 
 module "s3" {
   source               = "./modules/s3"
-  bucket_name          = var.bucket_name
+  for_each             = toset(var.bucket_names)
+  bucket_name          = each.key
   tags                 = var.tags
   versioning_status    = var.versioning_status
   s3_object_ownership  = var.s3_object_ownership

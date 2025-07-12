@@ -50,36 +50,53 @@ output "instance_public_ip" {
 # S3 Module Outputs
 output "bucket_name" {
   description = "Bucket name that's been created"
-  value       = module.s3.bucket_name
+  value = [for mod in module.s3 : mod.bucket_name]
 
 }
 
 output "bucket_arn" {
   description = "Bucket ARN"
-  value       = module.s3.bucket_arn
+  value = {
+    for name, mod in module.s3 :
+    name => mod.bucket_arn
+  }
 
 }
 
 output "bucket_region" {
   description = "Bucket region"
-  value       = module.s3.bucket_region
+  value = {
+    for name, mod in module.s3 :
+    name => mod.bucket_region
+
+  }
 
 }
 
 output "bucket_tags" {
   description = "Tag-urile bucketului"
-  value       = module.s3.bucket_tags
+  value = {
+    for name, mod in module.s3 :
+    name => mod.bucket_tags
+  }
 }
 
 output "website_endpoint" {
   description = "HTTP URL of static website"
-  value       = module.s3.website_endpoint
+  value = {
+    for name, mod in module.s3 :
+    name => mod.website_endpoint
+  }
 
 }
 
 output "rest_endpoint" {
   description = "REST URL (https) for objects"
-  value       = module.s3.rest_endpoint
+  value = {
+    for name, mod in module.s3 :
+    name => mod.rest_endpoint
+
+  }
 
 }
 
