@@ -66,15 +66,18 @@ resource "aws_key_pair" "test_key" {
 
 
 module "ec2" {
+  vpc_id             = aws_vpc.test_vpc.id
+  profile            = var.profile
   source             = "../"
   key_name           = var.key_name
+  ami_id             = var.ami_id
   instance_type      = var.instance_type
   availability_zone  = var.availability_zone
   public_subnet_id   = aws_subnet.test_public_subnet.id
   security_group_ids = [aws_security_group.test_sg.id]
 
 
-  user_data_path = "user_data.sh"
+  user_data = file("${path.module}/user_data.sh")
  tags = var.tags
 }
 
