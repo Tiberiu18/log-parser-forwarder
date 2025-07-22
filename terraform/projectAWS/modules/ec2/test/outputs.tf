@@ -10,5 +10,12 @@ output "instance_id" {
 }
 
 output "ec2_login_user" {
-value = module.ec2.ec2_login_user
+  value = module.ec2.ec2_login_user
+}
+
+
+output "ec2_private_key_path" {
+  value = module.ec2.ec2_private_key_path
+
+
 }

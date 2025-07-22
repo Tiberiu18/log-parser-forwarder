@@ -8,22 +8,22 @@ resource "aws_vpc" "test_vpc" {
 }
 
 resource "aws_internet_gateway" "igw" {
-vpc_id = aws_vpc.test_vpc.id
+  vpc_id = aws_vpc.test_vpc.id
 }
 
 resource "aws_route_table" "public_rt" {
-vpc_id = aws_vpc.test_vpc.id
+  vpc_id = aws_vpc.test_vpc.id
 
-route {
-cidr_block = "0.0.0.0/0"
-gateway_id = aws_internet_gateway.igw.id
-}
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+  }
 
 }
 
 resource "aws_route_table_association" "public_assoc" {
-subnet_id = aws_subnet.test_public_subnet.id
-route_table_id = aws_route_table.public_rt.id
+  subnet_id      = aws_subnet.test_public_subnet.id
+  route_table_id = aws_route_table.public_rt.id
 
 
 }
@@ -67,7 +67,6 @@ resource "aws_key_pair" "test_key" {
 
 module "ec2" {
   source             = "../"
-  key_name           = var.key_name
   instance_type      = var.instance_type
   availability_zone  = var.availability_zone
   public_subnet_id   = aws_subnet.test_public_subnet.id
@@ -75,7 +74,7 @@ module "ec2" {
 
 
   user_data_path = "user_data.sh"
- tags = var.tags
+  tags           = var.tags
 }
 
 

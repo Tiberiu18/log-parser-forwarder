@@ -37,6 +37,7 @@ output "nat_gateway_id" {
   value = module.vpc.nat_gateway_id
 }
 
+# EC2 Module Outputs
 output "instance_id" {
   value = module.ec2.instance_id
 
@@ -46,11 +47,19 @@ output "instance_public_ip" {
   value = module.ec2.instance_public_ip
 }
 
+output "ec2_login_user" {
+  value = module.ec2.ec2_login_user
+}
+
+output "ec2_private_key_path" {
+  value = module.ec2.ec2_private_key_path
+}
+
 
 # S3 Module Outputs
 output "bucket_name" {
   description = "Bucket name that's been created"
-  value = [for mod in module.s3 : mod.bucket_name]
+  value       = [for mod in module.s3 : mod.bucket_name]
 
 }
 
@@ -99,4 +108,5 @@ output "rest_endpoint" {
   }
 
 }
+
 
