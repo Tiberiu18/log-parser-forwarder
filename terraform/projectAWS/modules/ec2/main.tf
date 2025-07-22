@@ -7,6 +7,7 @@ public_key = tls_private_key.ec2_key.public_key_openssh
 
 
 resource "aws_instance" "log-parser-forwarder" {
+
   key_name               = aws_key_pair.ec2_key.key_name
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = var.instance_type
