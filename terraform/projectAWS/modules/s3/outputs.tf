@@ -22,13 +22,13 @@ output "bucket_tags" {
 }
 
 output "website_endpoint" {
-description = "HTTP URL of static website"
-	value = aws_s3_bucket_website_configuration.site[0].website_endpoint
+  description = "HTTP URL of static website"
+  value       = aws_s3_bucket_website_configuration.site[0].website_endpoint
 
 }
 
 output "rest_endpoint" {
-description = "REST URL (https) for objects"
-value = aws_s3_bucket.my_bucket.bucket_domain_name
+  description = "REST URL (https) for objects"
+  value       = aws_s3_bucket.my_bucket.bucket_domain_name
 
 }

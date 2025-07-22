@@ -1,6 +1,6 @@
 resource "aws_key_pair" "ec2_key" {
-key_name = "demo-key"
-public_key = tls_private_key.ec2_key.public_key_openssh
+  key_name   = "demo-key"
+  public_key = tls_private_key.ec2_key.public_key_openssh
 
 }
 
