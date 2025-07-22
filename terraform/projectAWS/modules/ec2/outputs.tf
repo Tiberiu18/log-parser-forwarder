@@ -14,7 +14,7 @@ output "ec2_login_user" {
 }
 
 output "ec2_private_key_path" {
-value = "${path.module}/id_rsa"
-description="Local path to SSH private key file used for connecting to EC2"
+  value       = "${path.module}/id_rsa"
+  description = "Local path to SSH private key file used for connecting to EC2"
 
 }
