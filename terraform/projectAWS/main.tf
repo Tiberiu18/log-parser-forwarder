@@ -21,7 +21,6 @@ module "vpc" {
 
 module "ec2" {
   source             = "./modules/ec2"
-  ami_id             = var.ami_id
   instance_type      = var.instance_type
   key_name           = var.key_name
   availability_zone  = var.availability_zone

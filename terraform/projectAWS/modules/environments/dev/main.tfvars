@@ -4,7 +4,6 @@ availability_zone="eu-north-1a"
 vpc_cidr = "10.0.0.0/16"
 public_subnet_cidrs = ["10.0.1.0/24"]
 private_subnet_cidrs = ["10.0.2.0/24"]
-ami_id = "ami-042b4708b1d05f512"
 instance_type = "t3.micro"
 key_name = "test-key"
 public_key_path = "~/.ssh/id_rsa.pub"
