@@ -100,3 +100,7 @@ output "rest_endpoint" {
 
 }
 
+output "ec2_login_user" {
+value = module.ec2.ec2_login_user
+}
+

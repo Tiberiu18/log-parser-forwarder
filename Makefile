@@ -5,11 +5,11 @@ apply_terraform:
 
 generate_inventory:
 	EC2_IP=$(terraform output -raw instance_public_ip)
-	USERNAME=$(terraform output -raw ec
+	USERNAME=$(terraform output -raw ec2_login_user)
 
 	cat > inventory.ini << EOF
 	[ec2]
-	ec2 ansible_host=$EC2_IP ansible_user=
+	ec2 ansible_host=$EC2_IP ansible_user=$USERNAME 
 EOF
 
 ansible_config:
