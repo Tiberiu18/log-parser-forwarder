@@ -19,7 +19,12 @@ jobs:
 
       - name: Terraform Format
         working-directory: ./terraform/projectAWS
-        run: terraform fmt -check -recursive
+        run: |
+                terraform fmt -check 
+                terraform fmt -check modules/ec2
+                terraform fmt -check modules/s3
+                terraform fmt -check modules/ebs
+                terraform fmt -check modules/vpc
 
       - name: Terraform Init
         working-directory: ./terraform/projectAWS
