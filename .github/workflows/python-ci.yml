@@ -1,0 +1,54 @@
+# .github/workflows/python-parser-ci.yml
+#
+name: CI - Python Parser
+on:
+  push:
+    branches: [main, staging, dev]
+    paths:
+      - 'parser/**'
+  pull_request:
+    branches: [main, staging, dev]
+    paths:
+      - 'parser/**'
+
+
+env:
+  IMAGE_NAME: docker.io/tiberiu18/log-parser
+
+
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.vars.outputs.image_tag }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: pip install -r parser/requirements.txt
+      
+
+      - name: Run tests if they exist
+        run: |
+                if [ -d parser/tests ]; then
+                        pytest parser/tests/
+                else
+                        echo "No tests found. Skipping"
+                fi
+
+
+      - name: Set image tag
+        id: vars
+        run: |
+                SHORT_SHA=$(echo $GITHUB_SHA | cut -c1-7)
+                BRANCH=$(echo $GITHUB_REF_NAME | tr '/' '-')
+                echo "image_tag=${BRANCH}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+
+
