@@ -1,0 +1,45 @@
+name: Terraform CI 
+
+on:
+  push:
+    branches: [main,dev,terraform-modules]
+    paths:
+      - 'terraform/**'
+  pull_request:
+    branches: [main,dev,staging,terraform-modules]
+    paths:
+      - 'terraform/**'
+
+
+jobs:
+  terraform-check:
+    name: Terraform check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+
+      - name: Terraform Format
+        working-directory: ./terraform/projectAWS
+        run: |
+                terraform fmt -check
+                terraform fmt -check modules/ec2
+                terraform fmt -check modules/s3
+                terraform fmt -check modules/ebs
+                terraform fmt -check modules/vpc
+      - name: Terraform Init
+        working-directory: ./terraform/projectAWS
+        run: terraform init
+
+      - name: Terraform Validate
+        working-directory: ./terraform/projectAWS
+        run: terraform validate
+
+      - name: Terraform plan
+        working-directory: ./terraform/projectAWS
+        run: terraform plan -var-file=./modules/environments/dev/main.tfvars
+
