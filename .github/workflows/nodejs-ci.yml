@@ -50,7 +50,7 @@ jobs:
           node-version: 18
 
       - name: Run linter
-        uses: npm run lint
+        run: npm run lint
 
 
   test:
@@ -71,4 +71,4 @@ jobs:
           node-version: 18
 
       - name: Run tests
-        uses: npm test
+        run: npm test
