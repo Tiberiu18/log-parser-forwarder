@@ -33,11 +33,11 @@ jobs:
                 done
 
       - name: Create test log
-        run: echo "ERROR Integration test log" > parser/test.log
+        run: echo "ERROR Integration test log" > logs/test.log
 
       - name: Run parser
         run: |
-                docker compose -f docker-compose.yml run --rm log-parser python logparsing.py parser/test.log --once
+                docker compose -f docker-compose.yml run --rm log-parser python logparsing.py /app/logs/test.log --once
 
       - name: Check backend logs
         run: |
