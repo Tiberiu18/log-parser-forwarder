@@ -72,7 +72,9 @@ def sendBatch(URL,listOfBatches):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Log parsing and forwarding")
     parser.add_argument("logfile")
+    parser.add_argument("--once", action="store_true", help="Run only one  parsing cycle")
     arguments = parser.parse_args()
+    run_once = arguments.once
     logfile = arguments.logfile
     URL = os.getenv("API_URL", "http://log-receiver-api:3000/logs")
     while True:
@@ -84,4 +86,6 @@ if __name__ == "__main__":
         except Exception as exc:
             # We already have parser_errors.inc(), so we'll just log now
             print("[MAIN] Unhandled error:", exc)
+        if run_once:
+            break
         time.sleep(60)
