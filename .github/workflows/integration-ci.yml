@@ -31,6 +31,9 @@ jobs:
                         echo "Waiting for backend..."
                         sleep 2
                 done
+      - name: Prepare test log
+        run: |
+          chmod -R u+w logs
 
       - name: Create test log
         run: echo "ERROR Integration test log" > logs/test.log
