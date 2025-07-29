@@ -24,3 +24,4 @@ terraform.tfvars
 .terraform.lock.hcl
 
 logs/
+parsed_logs/

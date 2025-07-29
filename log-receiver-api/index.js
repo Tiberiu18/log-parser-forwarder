@@ -45,7 +45,7 @@ app.post("/logs", asyncHandler(async(req,res)=> {
 
     const content = timestamped.join('\n') + '\n';
 
-    const logDir = path.join(__dirname, '../logs');
+    const logDir = path.join(__dirname, '../parsed_logs');
     if (!fs.existsSync(logDir)) {
         fs.mkdirSync(logDir);
     }
