@@ -37,7 +37,7 @@ jobs:
 
       - name: Run parser
         run: |
-                docker compose -f docker-compose.yml run --rm log-parser python logparsing.py parser/test.log
+                docker compose -f docker-compose.yml run --rm log-parser python logparsing.py parser/test.log --once
 
       - name: Check backend logs
         run: |
