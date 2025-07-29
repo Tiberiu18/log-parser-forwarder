@@ -33,7 +33,7 @@ jobs:
                 done
       - name: Prepare test log
         run: |
-          mkdir logs
+          mkdir -p logs
           chmod -R u+w logs
 
       - name: Create test log
