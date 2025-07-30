@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: log-receiver-api-alerts
+  labels:
+    release: prom-stack
+spec:
+  groups:
+    - name: log-receiver-api.rules
+      rules:
+        - alert: APIIsDown
+          expr: up{job="log-receiver-api-service"} == 0
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "NodeJS API is down"
+            description: "Unable to scrape NodeJS API for more than 1 minute."

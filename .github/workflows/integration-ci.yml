@@ -1,0 +1,53 @@
+name: Integration CI
+
+on:
+  push:
+    branches: [main, dev, staging]
+    paths:
+      - 'parser/**'
+      - 'log-receiver-api/**'
+      - 'docker-compose.yml'
+  pull_request:
+    branches: [main, dev, staging]
+
+jobs:
+  integration-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Build services
+        run: docker compose -f docker-compose.yml build log-receiver-api log-parser
+
+      - name: Start services
+        run: docker compose -f docker-compose.yml up log-receiver-api -d
+
+      - name: Wait for backend
+        run: |
+                for i in {1..10}; do
+                        curl -sSf http://localhost:3000/health && break
+                        echo "Waiting for backend..."
+                        sleep 2
+                done
+      - name: Prepare test log
+        run: |
+          mkdir -p logs
+          chmod -R u+w logs
+
+      - name: Create test log
+        run: echo "ERROR Integration test log" > logs/test.log
+
+      - name: Run parser
+        run: |
+                docker compose -f docker-compose.yml run --rm log-parser python logparsing.py /app/logs/test.log --once
+
+      - name: Check backend logs
+        run: |
+                docker compose -f docker-compose.yml logs log-receiver-api | grep "Integration test log"
+
+      - name: Tear down
+        if: always()
+        run: docker compose -f docker-compose.yml down
+
