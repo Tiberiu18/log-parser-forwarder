@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana-deployment
+  labels:
+    app: grafana-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana-deploy
+  template:
+    metadata:
+      labels: 
+        app: grafana-deploy
+    spec:
+      containers:
+        - name: grafana
+          image: grafana/grafana-oss:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: project-env
+                  key: GRAFANA_ADMIN_PASSWORD

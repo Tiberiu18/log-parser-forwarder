@@ -1,0 +1,27 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: log-parser-alerts
+  labels:
+    release: prom-stack
+spec:
+  groups:
+    - name: log-parser.rules
+      rules:
+        - alert: ParserDown
+          expr: up{job="log-parser-service"} == 0
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: "log-parser down"
+            description: "log-parser service is not responding for 2 minutes"
+        
+        - alert: ParserErrorRateHigh
+          expr: rate(parser_errors_total[5m]) > 0.1
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High error rate for log-parser service"
+            description: " {{ $value }} errors in parser."

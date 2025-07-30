@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-parser-deployment
+  labels:
+    app: log-parser
+
+spec:
+  replicas: {{ .Values.log_parser.replicas }}
+  selector:
+    matchLabels:
+      app: log-parser
+  template:
+    metadata:
+      labels:
+        app: log-parser
+    spec:
+      containers:
+        - name: log-parser
+          image: {{ .Values.log_parser.image }}
+          imagePullPolicy: {{ .Values.log_parser.pullPolicy }}
+          ports:
+            - containerPort: 8000
+          env:
+            - name: API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: project-env
+                  key: NODEJS_API_POST_URL

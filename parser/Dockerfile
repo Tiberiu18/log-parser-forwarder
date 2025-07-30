@@ -6,6 +6,8 @@ WORKDIR /usr/app/src
 
 COPY logparsing.py ./
 
+COPY logparsing_for_testing.py ./
+
 COPY sample.log ./
 
 COPY createSampleLogFile.py ./

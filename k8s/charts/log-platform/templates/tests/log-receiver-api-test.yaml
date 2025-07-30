@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: log-receiver-test
+  annotations:
+    "helm.sh/hook": test
+
+spec:
+  containers:
+    - name: curl
+      image: curlimages/curl
+      command: ["curl", "log-receiver-api-service:3000/health"]
+  restartPolicy: Never
