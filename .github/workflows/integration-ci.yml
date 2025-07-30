@@ -33,8 +33,7 @@ jobs:
                 done
       - name: Prepare test log
         run: |
-          mkdir logs
-          chmod -R u+w logs
+          mkdir -p logs
 
       - name: Create test log
         run: echo "ERROR Integration test log" > logs/test.log
