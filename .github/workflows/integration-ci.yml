@@ -33,11 +33,9 @@ jobs:
                 done
       - name: Prepare test log
         run: |
-          mkdir -p logs
-          chmod -R u+w logs
-
-      - name: Create test log
-        run: echo "ERROR Integration test log" > logs/test.log
+          sudo mkdir -p logs/ 
+          sudo chmod -R 755 logs/
+          sudo echo "ERROR Integration test log" | sudo tee logs/test.log > /dev/null
 
       - name: Run parser
         run: |
