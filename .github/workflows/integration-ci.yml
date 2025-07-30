@@ -35,7 +35,7 @@ jobs:
         run: |
           sudo mkdir -p logs/ 
           sudo chmod -R 755 logs/
-          sudo  echo "ERROR Integration test log" > logs/test.log
+          sudo echo "ERROR Integration test log" | sudo tee logs/test.log > /dev/null
 
       - name: Run parser
         run: |
