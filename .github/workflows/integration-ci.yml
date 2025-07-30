@@ -33,10 +33,10 @@ jobs:
                 done
       - name: Prepare test log
         run: |
-          mkdir -p logs
+          mkdir -p logs/ && echo "ERROR Integration test log" > logs/test.log
 
-      - name: Create test log
-        run: echo "ERROR Integration test log" > logs/test.log
+      - name: Inspect logs/ permissions
+        run: ls -ld logs
 
       - name: Run parser
         run: |
