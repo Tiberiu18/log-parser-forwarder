@@ -10,6 +10,9 @@ on:
     paths:
       - 'terraform/**'
 
+permissions: 
+  id-token: write
+  contents: read
 
 jobs:
   terraform-check:
@@ -19,6 +22,12 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::633359116457:role/OIDC-GitHub-LogParserForwarderRepo
+          aws-region: eu-north-1
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
@@ -26,6 +35,11 @@ jobs:
       - name: Terraform Format
         working-directory: ./terraform/projectAWS
         run: |
+                terraform fmt
+                terraform fmt modules/ec2
+                terraform fmt modules/s3
+                terraform fmt modules/ebs
+                terraform fmt modules/vpc
                 terraform fmt -check
                 terraform fmt -check modules/ec2
                 terraform fmt -check modules/s3
