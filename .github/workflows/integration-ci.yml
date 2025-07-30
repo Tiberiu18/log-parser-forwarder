@@ -33,13 +33,9 @@ jobs:
                 done
       - name: Prepare test log
         run: |
-          mkdir -p logs/ && echo "ERROR Integration test log" > logs/test.log
-        continue-on-error: true
-
-      - name: Show whoami and permissions
-        run: |
-                whoami
-                ls -ld logs
+          sudo mkdir -p logs/ 
+          sudo chmod -R 755 logs/
+          echo "ERROR Integration test log" > logs/test.log
 
       - name: Run parser
         run: |
