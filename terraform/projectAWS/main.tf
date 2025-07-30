@@ -3,12 +3,6 @@ provider "aws" {
   profile = var.profile
 }
 
-module "ssh_key" {
-  source          = "./modules/ssh_key"
-  key_name        = var.key_name
-  public_key_path = var.public_key_path
-
-}
 
 module "vpc" {
   source               = "./modules/vpc"
