@@ -26,6 +26,11 @@ jobs:
       - name: Terraform Format
         working-directory: ./terraform/projectAWS
         run: |
+                terraform fmt
+                terraform fmt modules/ec2
+                terraform fmt modules/s3
+                terraform fmt modules/ebs
+                terraform fmt modules/vpc
                 terraform fmt -check
                 terraform fmt -check modules/ec2
                 terraform fmt -check modules/s3
