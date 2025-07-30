@@ -4,11 +4,6 @@ variable "region" {
 
 }
 
-variable "profile" {
-  description = "AWS Credentials Profile"
-  default     = "default"
-
-}
 
 variable "bucket_name" {
   type = string

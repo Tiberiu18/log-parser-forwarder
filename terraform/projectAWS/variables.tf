@@ -4,10 +4,6 @@ variable "region" {
   description = "AWS region"
 }
 
-variable "profile" {
-  type        = string
-  description = "AWS CLI profile"
-}
 
 # VPC Module
 variable "vpc_cidr" {
