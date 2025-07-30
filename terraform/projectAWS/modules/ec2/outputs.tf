@@ -18,6 +18,3 @@ output "ec2_private_key_path" {
 
 }
 
-output "ec2_login_user" {
-value = local.login_user
-}
