@@ -34,9 +34,12 @@ jobs:
       - name: Prepare test log
         run: |
           mkdir -p logs/ && echo "ERROR Integration test log" > logs/test.log
+        continue-on-error: true
 
-      - name: Inspect logs/ permissions
-        run: ls -ld logs
+      - name: Show whoami and permissions
+        run: |
+                whoami
+                ls -ld logs
 
       - name: Run parser
         run: |
