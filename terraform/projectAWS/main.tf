@@ -22,7 +22,6 @@ module "vpc" {
 module "ec2" {
   source             = "./modules/ec2"
   instance_type      = var.instance_type
-  key_name           = var.key_name
   availability_zone  = var.availability_zone
   public_subnet_id   = module.vpc.public_subnet_id
   security_group_ids = [module.vpc.security_group_id]
