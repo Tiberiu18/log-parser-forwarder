@@ -1,33 +1,33 @@
 variable "region" {
-type = string
-default = "eu-north-1"
+  type    = string
+  default = "eu-north-1"
 }
 variable "availability_zone" {
-type = string
+  type = string
 }
 
 variable "size" {
-type = number
-default = 3
+  type    = number
+  default = 3
 }
 
 variable "type" {
-type = string
-default = "gp3"
+  type    = string
+  default = "gp3"
 }
 
 variable "encrypted" {
-type = bool
-default = false
+  type    = bool
+  default = false
 }
 
 variable "device_name" {
-type = string
-default = "/dev/xvdf"
+  type    = string
+  default = "/dev/xvdf"
 
 }
 
 variable "instance_id" {
-type = string
+  type = string
 
 }

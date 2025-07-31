@@ -4,13 +4,7 @@ variable "region" {
   description = "AWS region"
 }
 
-variable "profile" {
-  type        = string
-  description = "AWS CLI profile"
-}
 
-# SSH key module
-variable "public_key_path" {}
 # VPC Module
 variable "vpc_cidr" {
   type        = string
@@ -28,20 +22,12 @@ variable "private_subnet_cidrs" {
 }
 
 # EC2 Module
-variable "ami_id" {
-  type        = string
-  description = "AMI ID for the EC2 instance"
-}
 
 variable "instance_type" {
   type        = string
   description = "EC2 instance type"
 }
 
-variable "key_name" {
-  type        = string
-  description = "Name of the SSH key pair"
-}
 
 variable "availability_zone" {
   type        = string

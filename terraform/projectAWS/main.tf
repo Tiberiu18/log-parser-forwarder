@@ -1,14 +1,7 @@
 provider "aws" {
   region  = var.region
-  profile = var.profile
 }
 
-module "ssh_key" {
-  source          = "./modules/ssh_key"
-  key_name        = var.key_name
-  public_key_path = var.public_key_path
-
-}
 
 module "vpc" {
   source               = "./modules/vpc"
@@ -22,7 +15,6 @@ module "vpc" {
 module "ec2" {
   source             = "./modules/ec2"
   instance_type      = var.instance_type
-  key_name           = var.key_name
   availability_zone  = var.availability_zone
   public_subnet_id   = module.vpc.public_subnet_id
   security_group_ids = [module.vpc.security_group_id]

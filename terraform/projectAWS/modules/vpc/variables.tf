@@ -36,5 +36,5 @@ variable "tags" {
 }
 
 variable "availability_zone" {
-type = string
+  type = string
 }
