@@ -21,13 +21,19 @@ resource "aws_subnet" "public_subnet" {
 }
 
 resource "aws_subnet" "private_subnet" {
+  for_each = {
+	for idx, az in var.availability_zones : az => {
+		cidr = var.private_subnet_cidrs[idx]
+	}
+
+}
   vpc_id                  = aws_vpc.myvpc.id
-  availability_zone       = var.availability_zone
-  cidr_block              = var.private_subnet_cidrs[0]
+  availability_zone       = each.key
+  cidr_block              = each.value.cidr
   map_public_ip_on_launch = false
 
   tags = merge(var.tags, {
-    Name = "Private-Subnet"
+    Name = "Private-Subnet-${each.key}"
   })
 
 
