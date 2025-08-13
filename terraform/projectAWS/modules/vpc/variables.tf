@@ -13,7 +13,7 @@ variable "vpc_cidr" {
 variable "public_subnet_cidrs" {
   description = "List of CIDR blocks for public subnets"
   type        = list(string)
-  default     = ["10.0.1.0/24","10.0.2.0/24"]
+  default     = ["10.0.1.0/24", "10.0.2.0/24"]
 
 }
 
@@ -40,7 +40,7 @@ variable "availability_zone" {
 }
 
 variable "availability_zones" {
-type = list(string)
-default = ["eu-north-1a", "eu-north-1b"]
+  type    = list(string)
+  default = ["eu-north-1a", "eu-north-1b"]
 
 }

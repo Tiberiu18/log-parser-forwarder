@@ -8,25 +8,36 @@ resource "aws_vpc" "myvpc" {
 
 }
 
+locals {
+  public_subnets = {
+    for idx, az in var.availability_zones : az => {
+      cidr = var.public_subnet_cidrs[idx]
+    }
+  }
+
+  private_subnets = {
+    for idx, az in var.availability_zones : az => {
+      cidr = var.private_subnet_cidrs[idx]
+    }
+  }
+
+}
+
 resource "aws_subnet" "public_subnet" {
+  for_each          = locals.public_subnets
   vpc_id            = aws_vpc.myvpc.id
-  availability_zone = var.availability_zone
-  cidr_block        = var.public_subnet_cidrs[0]
+  availability_zone = each.key
+  cidr_block        = each.value.cidr
 
   map_public_ip_on_launch = true
 
   tags = merge(var.tags, {
-    Name = "Public-Subnet"
+    Name = "Public-Subnet-${each.key}"
   })
 }
 
 resource "aws_subnet" "private_subnet" {
-  for_each = {
-	for idx, az in var.availability_zones : az => {
-		cidr = var.private_subnet_cidrs[idx]
-	}
-
-}
+  for_each                = locals.private_subnets
   vpc_id                  = aws_vpc.myvpc.id
   availability_zone       = each.key
   cidr_block              = each.value.cidr
@@ -50,20 +61,27 @@ resource "aws_internet_gateway" "igw" {
 }
 
 resource "aws_eip" "nat_eip" {
-  domain = "vpc"
+  for_each = locals.public_subnets
+  domain   = "vpc"
+  tags = merge(var.tags, {
+    Name = "nat-eip-${each.key}"
+  })
 }
 
 resource "aws_nat_gateway" "nat" {
-  allocation_id = aws_eip.nat_eip.id
+  for_each      = locals.public_subnets
+  allocation_id = aws_eip.nat_eip[each.key].id
 
-  subnet_id = aws_subnet.public_subnet.id
+  subnet_id = aws_subnet.public_subnet[each.key].id
 
   tags = merge(var.tags, {
-    Name = "nat-gateway"
+    Name = "nat-gateway-${each.key}"
   })
 }
 
 resource "aws_route_table" "public_rt" {
+  for_each = aws_subnet.public_subnet
+
   vpc_id = aws_vpc.myvpc.id
 
   route {
@@ -71,33 +89,46 @@ resource "aws_route_table" "public_rt" {
     gateway_id = aws_internet_gateway.igw.id
   }
 
+  tags = merge(var.tags, {
+    Name = "public-rt-${each.key}"
+  })
+
 }
 
 resource "aws_route_table" "private_rt" {
-  vpc_id = aws_vpc.myvpc.id
+  for_each = aws_nat_gateway.nat
+  vpc_id   = aws_vpc.myvpc.id
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat.id
+    nat_gateway_id = each.value.id
   }
+
+  tags = merge(var.tags, {
+    Name = "private-rt-${each.key}"
+  })
 }
 
 resource "aws_route_table_association" "public_assoc" {
-  subnet_id      = aws_subnet.public_subnet.id
-  route_table_id = aws_route_table.public_rt.id
+  for_each       = aws_subnet.public_subnet
+  subnet_id      = each.key.id
+  route_table_id = aws_route_table.public_rt[each.key].id
 }
 
 
 resource "aws_route_table_association" "private_assoc" {
-  subnet_id      = aws_subnet.private_subnet.id
-  route_table_id = aws_route_table.private_rt.id
+  for_each       = locals.public_subnets
+  subnet_id      = aws_subnet.private_subnet[each.key].id
+  route_table_id = aws_route_table.private_rt[each.key].id
 }
 
 
 resource "aws_security_group" "allow_ssh" {
-  vpc_id = aws_vpc.myvpc.id
+  for_each    = aws_subnet.public_subnet
+  name        = "allow-ssh-${each.key}"
+  vpc_id      = aws_vpc.myvpc.id
+  description = "Allow SSH from anywhere and allow outbound to any address into public subnet ${each.key}"
   ingress {
-    description = "Allow SSH from anywhere"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -114,6 +145,7 @@ resource "aws_security_group" "allow_ssh" {
 
   }
 
-
+  tags = merge(var.tags, { Name = "sg-ssh-${each.key}" }
+  )
 
 }
