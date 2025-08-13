@@ -1,5 +1,5 @@
 provider "aws" {
-  region  = var.region
+  region = var.region
 }
 
 
@@ -12,28 +12,28 @@ module "vpc" {
   tags                 = var.tags
 }
 
-module "ec2" {
-  source             = "./modules/ec2"
-  instance_type      = var.instance_type
-  availability_zone  = var.availability_zone
-  public_subnet_id   = module.vpc.public_subnet_id
-  security_group_ids = [module.vpc.security_group_id]
-  user_data_path     = file(var.user_data_path)
-  tags               = var.tags
+#module "ec2" {
+# source             = "./modules/ec2"
+#instance_type      = var.instance_type
+# availability_zone  = var.availability_zone
+# public_subnet_id   = module.vpc.public_subnet_id
+# security_group_ids = [module.vpc.security_group_id]
+# user_data_path     = file(var.user_data_path)
+# tags               = var.tags
 
 
-}
+#}
 
-module "ebs" {
-  source            = "./modules/ebs"
-  availability_zone = var.availability_zone
-  size              = var.size
-  type              = var.type
-  encrypted         = var.encrypted
-  device_name       = var.device_name
-  instance_id       = module.ec2.instance_id
+#module "ebs" {
+# source            = "./modules/ebs"
+#availability_zone = var.availability_zone
+#size              = var.size
+#type              = var.type
+#encrypted         = var.encrypted
+#device_name       = var.device_name
+#instance_id       = module.ec2.instance_id
 
-}
+#}
 
 module "s3" {
   source               = "./modules/s3"
@@ -50,28 +50,51 @@ module "s3" {
 }
 
 module "eks" {
- source = "terraform-aws-modules/eks/aws"
- version = "~> 20.0"
- cluster_name = "devops-eks-dev"
- cluster_version = "1.33"
-vpc_id = module.vpc.vpc_id
-subnet_ids = module.vpc.private_subnet_ids
+  source             = "terraform-aws-modules/eks/aws"
+  version            = "~> 21.0"
+  name               = "devops-eks-dev"
+  kubernetes_version = "1.33"
 
-enable_irsa = true
+  addons = {
+    coredns = {}
+    eks-pod-identity-agent = {
+      before_compute = true
+    }
+    kube-proxy = {}
+    vpc-cni = {
+      before_compute = true
+    }
 
-eks_managed_node_groups = {
-	default = {
-	desired_size = 2
-	max_size = 3
-	min_size = 1
+  }
 
-	instance_types = [var.instance_type]
-	capacity_type= "Spot"
-	
+  # Optional
+  endpoint_public_access = true
+
+  # Optional - to automatically add the caller identity to EKS admins
+  enable_cluster_creator_admin_permissions = true
+
+
+
+
+
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.vpc.private_subnet_ids
+
+  eks_managed_node_groups = {
+    default = {
+      desired_size = 2
+      max_size     = 3
+      min_size     = 1
+
+      instance_types = [var.instance_type]
+      capacity_type  = "Spot"
+
+    }
+
+  }
+
+  tags = merge(var.tags, {
+  Terraform = "true" })
 }
 
-}
 
-manage_aws_auth = true
-
-}

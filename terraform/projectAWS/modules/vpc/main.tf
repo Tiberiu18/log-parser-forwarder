@@ -24,7 +24,7 @@ locals {
 }
 
 resource "aws_subnet" "public_subnet" {
-  for_each          = locals.public_subnets
+  for_each          = local.public_subnets
   vpc_id            = aws_vpc.myvpc.id
   availability_zone = each.key
   cidr_block        = each.value.cidr
@@ -37,7 +37,7 @@ resource "aws_subnet" "public_subnet" {
 }
 
 resource "aws_subnet" "private_subnet" {
-  for_each                = locals.private_subnets
+  for_each                = local.private_subnets
   vpc_id                  = aws_vpc.myvpc.id
   availability_zone       = each.key
   cidr_block              = each.value.cidr
@@ -61,7 +61,7 @@ resource "aws_internet_gateway" "igw" {
 }
 
 resource "aws_eip" "nat_eip" {
-  for_each = locals.public_subnets
+  for_each = local.public_subnets
   domain   = "vpc"
   tags = merge(var.tags, {
     Name = "nat-eip-${each.key}"
@@ -69,7 +69,7 @@ resource "aws_eip" "nat_eip" {
 }
 
 resource "aws_nat_gateway" "nat" {
-  for_each      = locals.public_subnets
+  for_each      = local.public_subnets
   allocation_id = aws_eip.nat_eip[each.key].id
 
   subnet_id = aws_subnet.public_subnet[each.key].id
@@ -111,13 +111,13 @@ resource "aws_route_table" "private_rt" {
 
 resource "aws_route_table_association" "public_assoc" {
   for_each       = aws_subnet.public_subnet
-  subnet_id      = each.key.id
+  subnet_id      = each.value.id
   route_table_id = aws_route_table.public_rt[each.key].id
 }
 
 
 resource "aws_route_table_association" "private_assoc" {
-  for_each       = locals.public_subnets
+  for_each       = local.public_subnets
   subnet_id      = aws_subnet.private_subnet[each.key].id
   route_table_id = aws_route_table.private_rt[each.key].id
 }
@@ -149,3 +149,4 @@ resource "aws_security_group" "allow_ssh" {
   )
 
 }
+
