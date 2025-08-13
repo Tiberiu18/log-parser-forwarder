@@ -8,7 +8,7 @@ module "vpc" {
   vpc_cidr             = var.vpc_cidr
   public_subnet_cidrs  = var.public_subnet_cidrs
   private_subnet_cidrs = var.private_subnet_cidrs
-  availability_zone    = var.availability_zone
+  availability_zones    = var.availability_zones
   tags                 = var.tags
 }
 
@@ -87,7 +87,7 @@ module "eks" {
       min_size     = 1
 
       instance_types = [var.instance_type]
-      capacity_type  = "Spot"
+      capacity_type  = "SPOT"
 
     }
 
