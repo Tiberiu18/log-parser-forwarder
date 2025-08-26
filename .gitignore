@@ -25,3 +25,6 @@ terraform.tfvars
 
 logs/
 parsed_logs/
+
+# NodeJS
+**/coverage/
