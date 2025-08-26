@@ -47,7 +47,7 @@ jobs:
                 terraform fmt -check modules/vpc
       - name: Terraform Init
         working-directory: ./terraform/projectAWS
-        run: terraform init
+        run: terraform init -upgrade
 
       - name: Terraform Validate
         working-directory: ./terraform/projectAWS
