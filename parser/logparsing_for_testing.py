@@ -53,9 +53,14 @@ def createBatchesOfTen(content):
         batch.clear()
     return listOfBatches
 
-def sendBatch(URL,listOfBatches):
+def sendBatch(URL,listOfBatches, logFilePath):
+    logFileName = os.path.basename(logFilePath)
+    mod_time = os.path.getmtime(logFilePath)
+    mod_timestamp = datetime.utcfromtimestamp(mod_time).isoformat()
     payload = {"logs": listOfBatches}
-    headers = {'Content-Type':'application/json'}
+    headers = {'Content-Type':'application/json',
+            'X-Log-File-Name': logFileName,
+            'X-Log-Timestamp': mod_timestamp}
     try:
         response = requests.post(URL, json=payload, headers=headers, timeout=5)
         # What is this for? Well, if status code is 200-299, won't do anything
@@ -78,7 +83,7 @@ if __name__ == "__main__":
     try:
         logfile_content = readLogFile(logfile)
         listOfBatches = createBatchesOfTen(logfile_content)
-        response = sendBatch(URL,listOfBatches)
+        response = sendBatch(URL,listOfBatches, logfile)
         print(response.text)
     except Exception as exc:
         print("[MAIN] Unhandled error:", exc)

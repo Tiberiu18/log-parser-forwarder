@@ -5,6 +5,7 @@ import re
 import os
 import time
 from prometheus_client import Counter, start_http_server
+from datetime import datetime
 # Start /metrics at port 8000
 start_http_server(8000) # runs in a separate thread
 print("[INIT] Metrics server setup :8000; starting parsing loop...")
@@ -53,9 +54,21 @@ def createBatchesOfTen(content):
         batch.clear()
     return listOfBatches
 
-def sendBatch(URL,listOfBatches):
+def sendBatch(URL,listOfBatches, logFilePath):
+    # Theoretically we need the fileName, so if we have a file path like /root/tibi/logFile
+    # We will need name only
+    logFileName = os.path.basename(logFilePath)
+    mod_time = os.path.getmtime(logFilePath)
+
+    # Convert to ISO 8601 format for timestamp
+    mod_timestamp = datetime.utcfromtimestamp(mod_time).isoformat()
+    
     payload = {"logs": listOfBatches}
-    headers = {'Content-Type':'application/json'}
+    headers = {'Content-Type':'application/json',
+            'X-Log-File-Name': logFileName,
+            'X-Log-Timestamp': mod_timestamp
+            }
+    print("Header is:",headers)
     try:
         response = requests.post(URL, json=payload, headers=headers, timeout=5)
         # What is this for? Well, if status code is 200-299, won't do anything
@@ -81,7 +94,7 @@ if __name__ == "__main__":
         try:
             logfile_content = readLogFile(logfile)
             listOfBatches = createBatchesOfTen(logfile_content)
-            response = sendBatch(URL,listOfBatches)
+            response = sendBatch(URL,listOfBatches, logfile)
             print(response.text)
         except Exception as exc:
             # We already have parser_errors.inc(), so we'll just log now
