@@ -4,6 +4,7 @@ import argparse
 import re
 import os
 import time
+from datetime import datetime
 #from prometheus_client import Counter, start_http_server
 # Start /metrics at port 8000
 #start_http_server(8000) # runs in a separate thread
