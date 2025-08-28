@@ -1,29 +1,29 @@
-
+# VPC Module Outputs
 output "vpc_id" {
 
   value = module.vpc.vpc_id
 }
 
 output "public_subnet_id" {
-  value = module.vpc.public_subnet_id
+  value = module.vpc.public_subnet_ids
 }
 
 output "private_subnet_id" {
-  value = module.vpc.private_subnet_id
+  value = module.vpc.private_subnet_ids
 }
 
 output "security_group_id" {
-  value = module.vpc.security_group_id
+  value = module.vpc.security_group_ids
 }
 
 output "public_route_table_id" {
-  value = module.vpc.public_route_table_id
+  value = module.vpc.public_route_table_ids
 
 }
 
 
 output "private_route_table_id" {
-  value = module.vpc.private_route_table_id
+  value = module.vpc.private_route_table_ids
 
 }
 
@@ -34,26 +34,26 @@ output "internet_gateway_id" {
 }
 
 output "nat_gateway_id" {
-  value = module.vpc.nat_gateway_id
+  value = module.vpc.nat_gateway_ids
 }
 
 # EC2 Module Outputs
-output "instance_id" {
-  value = module.ec2.instance_id
+#output "instance_id" {
+# value = module.ec2.instance_id
 
-}
+#}
 
-output "instance_public_ip" {
-  value = module.ec2.instance_public_ip
-}
+#output "instance_public_ip" {
+# value = module.ec2.instance_public_ip
+#}
 
-output "ec2_login_user" {
-  value = module.ec2.ec2_login_user
-}
+#output "ec2_login_user" {
+# value = module.ec2.ec2_login_user
+#}
 
-output "ec2_private_key_path" {
-  value = module.ec2.ec2_private_key_path
-}
+#output "ec2_private_key_path" {
+# value = module.ec2.ec2_private_key_path
+#}
 
 
 # S3 Module Outputs

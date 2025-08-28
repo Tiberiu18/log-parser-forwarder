@@ -21,17 +21,16 @@ variable "private_subnet_cidrs" {
   description = "List of CIDRs for private subnets"
 }
 
+variable "availability_zones" {
+type = list(string)
+description = "List of AZs for VPC"
+}
+
 # EC2 Module
 
 variable "instance_type" {
   type        = string
   description = "EC2 instance type"
-}
-
-
-variable "availability_zone" {
-  type        = string
-  description = "Availability Zone for EC2 and EBS"
 }
 
 variable "user_data_path" {
