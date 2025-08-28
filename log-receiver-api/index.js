@@ -38,25 +38,36 @@ app.post('/logs', asyncHandler(async(req,res)=> {
         return res.status(400).json({error: 'The payload must be a list of lists'});
     }
 
+    const originalFileName = req.headers['X-Log-File-Name'] || 'unknown.log';
+    const originalTimestamp = req.headers['X-Log-Timestamp'] || new Date().toISOString();
+
+    console.log(originalFileName);
+    console.log(originalTimestamp);
+
     const flatLogs = logs.flat();
 
-    const timestamped = flatLogs.map(line => `[${new Date().toISOString()}] ${line}`);
+    const timestamped = flatLogs.map(line => `[${originalTimestamp}] ${line}`);
 
 
-    const content = timestamped.join('\n') + '\n';
+    const content = `---- Logs from ${originalFileName} @ ${originalTimestamp} ----\n` + timestamped.join('\n') + '\n\n';
 
     const logDir = path.join(__dirname, '../parsed_logs');
     if (!fs.existsSync(logDir)) {
         fs.mkdirSync(logDir);
     }
 
-    fs.appendFile(path.join(logDir, 'app.log'), content, err => {
+    const safeTimestamp = originalTimestamp.replace(/[:]/g, '-');
+    const outputFileName = `${originalFileName}_${safeTimestamp}.log`;
+
+    const outputFile = path.join(logDir, outputFileName);
+
+    fs.appendFile(outputFile, content, err => {
         if (err) {
         console.error('Error writing: ', err);
         return res.status(500).json({ error: 'Could not write to file.'});
         }
 
-        res.status(200).json({message: 'Logs saved successfully.'});
+        res.status(200).json({message: `Logs saved successfully. Original File Name is ${originalFileName} with timestamp ${originalTimestamp}`});
     });
 
 }));
