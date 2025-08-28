@@ -38,8 +38,8 @@ app.post('/logs', asyncHandler(async(req,res)=> {
         return res.status(400).json({error: 'The payload must be a list of lists'});
     }
 
-    const originalFileName = req.headers['X-Log-File-Name'] || 'unknown.log';
-    const originalTimestamp = req.headers['X-Log-Timestamp'] || new Date().toISOString();
+    const originalFileName = req.headers['x-log-file-name'] || 'unknown.log';
+    const originalTimestamp = req.headers['x-log-timestamp'] || new Date().toISOString();
 
     console.log(originalFileName);
     console.log(originalTimestamp);
