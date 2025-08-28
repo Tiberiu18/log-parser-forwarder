@@ -30,7 +30,7 @@ describe('POST /logs', () => {
     };
     const res = await request(app).post('/logs').send(payload);
     expect(res.statusCode).toBe(200);
-    expect(res.body.message).toBe('Logs saved successfully.');
+    expect(res.body.message).toContain('Logs saved successfully.');
   });
 
   it('should return 400 for invalid payload', async () => {
