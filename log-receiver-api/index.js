@@ -51,7 +51,7 @@ app.post('/logs', asyncHandler(async(req,res)=> {
 
     const content = `---- Logs from ${originalFileName} @ ${originalTimestamp} ----\n` + timestamped.join('\n') + '\n\n';
 
-    const logDir = path.join(__dirname, '../parsed_logs');
+    const logDir = path.join(__dirname, '../app/parsed_logs');
     if (!fs.existsSync(logDir)) {
         fs.mkdirSync(logDir);
     }
@@ -86,6 +86,55 @@ app.get('/metrics', async(req,res) => {
 
 app.get('/health', async(req,res) => {
 	res.status(200).json({message: 'NodeJS API is up...'});
+});
+
+// This will get the logs from the last 3 files
+app.get('/logs', async(req,res) => {
+try{
+
+const logDir = path.join(__dirname, '../app/parsed_logs');
+    console.log('Dirname is: ', __dirname);
+
+    const files = fs.readdirSync(logDir);
+    const logFiles = files.filter(file => file.endsWith('.log'));
+
+    // Extract timestamp
+    const sorted = logFiles
+      .map(file => {
+        const match = file.match(/_(\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}(?:\.\d+)?Z)/);
+        const timestamp = match
+          ? match[1].replace(/T(\d{2})-(\d{2})-(\d{2})/, 'T$1:$2:$3')
+          : null;
+
+        return {
+          name: file,
+          fullPath: path.join(logDir, file),
+          date: timestamp ? new Date(timestamp) : new Date(0)
+        };
+      })
+      .sort((a, b) => b.date - a.date);
+
+    const top3 = sorted.slice(0, 3);
+
+    // Read file content
+    const contents = top3.map(entry => {
+      const content = fs.readFileSync(entry.fullPath, 'utf-8');
+      return {
+        file: entry.name,
+        timestamp: entry.date.toISOString(),
+        content
+      };
+    });
+
+    res.status(200).json({ logs: contents });
+
+}
+
+catch(err) {
+console.error('Error reading logs: ', err);
+	res.status(500).json({message: 'Could not read log files...'});
+}
+
 });
 
 
