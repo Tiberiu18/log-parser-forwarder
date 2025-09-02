@@ -51,9 +51,9 @@ app.post('/logs', asyncHandler(async(req,res)=> {
 
     const content = `---- Logs from ${originalFileName} @ ${originalTimestamp} ----\n` + timestamped.join('\n') + '\n\n';
 
-    const logDir = path.join(__dirname, '../app/parsed_logs');
+    const logDir = path.join(process.cwd(),'parsed_logs');
     if (!fs.existsSync(logDir)) {
-        fs.mkdirSync(logDir);
+        fs.mkdirSync(logDir, {recursive: true});
     }
 
     const safeTimestamp = originalTimestamp.replace(/[:]/g, '-');
@@ -92,8 +92,7 @@ app.get('/health', async(req,res) => {
 app.get('/logs', async(req,res) => {
 try{
 
-const logDir = path.join(__dirname, '../app/parsed_logs');
-    console.log('Dirname is: ', __dirname);
+const logDir = path.join(process.cwd(), 'parsed_logs');
 
     const files = fs.readdirSync(logDir);
     const logFiles = files.filter(file => file.endsWith('.log'));
