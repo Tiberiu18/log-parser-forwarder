@@ -5,6 +5,8 @@ const fs = require('fs');
 const app = express();
 // Official Prometheus library for Node-js
 const client = require('prom-client');
+const cors = require('cors');
+app.use(cors());
 app.use(express.json());
 
 
