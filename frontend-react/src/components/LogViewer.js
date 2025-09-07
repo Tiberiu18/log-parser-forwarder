@@ -7,7 +7,10 @@ function LogViewer() {
 
   useEffect(() => {
     getLogs()
-      .then(data => setLogs(data))
+      .then(data => {
+	      console.log('Received logs', data.logs);
+	      setLogs(data.logs);
+      })
       .catch(err => setError(err.message));
   }, []);
 
@@ -17,7 +20,7 @@ function LogViewer() {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <ul>
         {logs.map((log, index) => (
-          <li key={index}>{log.message}</li>
+          <li key={index}>{log.content}</li>
         ))}
       </ul>
     </div>

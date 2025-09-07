@@ -1,15 +1,22 @@
 // src/api.js
 const apiUrl = process.env.REACT_APP_API_URL;
-
 export async function getLogs() {
-  const response = await fetch(`${apiUrl}/logs`);
-  if (!response.ok) {
-    throw new Error('Eroare la preluarea logurilor');
+  console.log('Fetching from:', `${apiUrl}/logs`);
+  try {
+    const response = await fetch(`${apiUrl}/logs`);
+    const text = await response.text();
+    console.log('Raw response:', text);
+    return JSON.parse(text);
+  } catch (err) {
+    console.error('Fetch error:', err);
+    throw err;
   }
-  return await response.json();
 }
 
+	
+	
 export async function postLog(logData) {
+  console.log(`${apiUrl}`);
   const response = await fetch(`${apiUrl}/logs`, {
     method: 'POST',
     headers: {
