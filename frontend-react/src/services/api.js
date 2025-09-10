@@ -25,7 +25,7 @@ export async function postLog(logData) {
     body: JSON.stringify(logData),
   });
   if (!response.ok) {
-    throw new Error('Eroare la trimiterea logului');
+    throw new Error('Error under src/services/api.js postLog function');
   }
   return await response.json();
 }
