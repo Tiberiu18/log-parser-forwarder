@@ -9,8 +9,8 @@ function LogViewer() {
     const fetchLogs = () => {
     getLogs()
       .then(data => {
-	      console.log('Received logs', data.logs);
-	      setLogs(data.logs);
+        console.log('Received logs', data.logs);
+        setLogs(data.logs);
       })
       .catch(err => setError(err.message));
   };
