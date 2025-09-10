@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import LogViewer from '../components/LogViewer';
 import { getLogs } from '../services/api';
 
@@ -21,12 +21,10 @@ describe('LogViewer component', () => {
 
     render(<LogViewer />);
 
-    await waitFor(() => {
-      expect(screen.getByText(/log1.txt/i)).toBeInTheDocument();
-      expect(screen.getByText(/Log 1 content/i)).toBeInTheDocument();
-      expect(screen.getByText(/log2.txt/i)).toBeInTheDocument();
-      expect(screen.getByText(/log3.txt/i)).toBeInTheDocument();
-    });
+    expect(await screen.findByText(/log1.txt/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Log 1 content/i)).toBeInTheDocument();
+    expect(await screen.findByText(/log2.txt/i)).toBeInTheDocument();
+    expect(await screen.findByText(/log3.txt/i)).toBeInTheDocument();
   });
 
   test('Display error message if fetch fails', async () => {
@@ -34,10 +32,8 @@ describe('LogViewer component', () => {
 
     render(<LogViewer />);
 
-    await waitFor(() => {
-      expect(screen.getByText(/error/i)).toBeInTheDocument();
-      expect(screen.getByText(/Network error/i)).toBeInTheDocument();
-    });
+    expect(await screen.findByText(/eroare/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Network error/i)).toBeInTheDocument();
   });
 });
 
