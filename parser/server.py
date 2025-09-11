@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 import tempfile
-from .core import readLogFile, createBatchesOfTen, sendBatch
-from .metrics import batches_sent, parser_errors
+from core import readLogFile, createBatchesOfTen, sendBatch
+from metrics import batches_sent, parser_errors
 
 import os
 

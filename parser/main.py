@@ -1,8 +1,8 @@
 import argparse
 import time
 import os
-from .core import readLogFile, createBatchesOfTen, sendBatch
-from .metrics import start_metrics_server, batches_sent, parser_errors
+from core import readLogFile, createBatchesOfTen, sendBatch
+from metrics import start_metrics_server, batches_sent, parser_errors
 
 def main():
     parser = argparse.ArgumentParser(description="Log parsing and forwarding")
