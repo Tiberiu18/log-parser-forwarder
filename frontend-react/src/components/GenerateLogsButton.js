@@ -5,25 +5,34 @@ import { isValidLogPayload } from '../utils/validation';
 
 function GenerateLogsButton() {
   const handleClick = async () => {
-    const logContent = generateLogContent();
+  const logContent = generateLogContent();
 
-    if (!isValidLogPayload(logContent)) {
-      console.error('Invalid Payload, validation fails isValidLogPayload function. Must be an array of arrays');
-      alert('Error: Invalid log format, nothing has been sent.');
-      return;
-    }
+  if (!isValidLogPayload(logContent)) {
+    console.error('Invalid Payload');
+    alert('Error: Invalid log format, nothing has been sent.');
+    return;
+  }
 
-    try {
-      const result = await postLog({ logs: logContent });
-      console.log('Log has been successfully sent GenerateLogsButton function:', result);
-      downloadLogFile(logContent);
-    } catch (err) {
-      console.error('Error sending logs:', err.message);
-      alert('Log sending has failed.');
-    }
-  };
+  const logText = logContent
+    .map(([timestamp, level, message]) => `[${timestamp}] ${level}: ${message}`)
+    .join("\n");
 
-  return <button onClick={handleClick}>Generate and send log</button>;
+  const blob = new Blob([logText], { type: "text/plain" });
+  const formData = new FormData();
+  formData.append("file", blob, "generated.log");
+
+  try {
+    const result = await postLog(formData, true); // true = e formData
+    console.log('Log sent successfully:', result);
+    downloadLogFile(logContent);
+  } catch (err) {
+    console.error('Error sending logs:', err.message);
+    alert('Log sending has failed.');
+  }
+};
+
+	
+	return <button onClick={handleClick}>Generate and send log</button>;
 }
 
 export default GenerateLogsButton;
