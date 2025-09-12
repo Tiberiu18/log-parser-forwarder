@@ -22,17 +22,20 @@ export function generateLogContent() {
   return logArray;
 }
 
-export function downloadLogFile(logArray, filename = 'generated-log.log') {
+export function downloadLogFile(logArray, filename) {
+
   const content = logArray
     .map(([timestamp, level, message]) => `[${timestamp}] ${level}: ${message}`)
     .join('\n');
 
   const blob = new Blob([content], { type: 'text/plain' });
   const url = URL.createObjectURL(blob);
+
   const a = document.createElement('a');
   a.href = url;
   a.download = filename;
   a.click();
+
   URL.revokeObjectURL(url);
 }
 

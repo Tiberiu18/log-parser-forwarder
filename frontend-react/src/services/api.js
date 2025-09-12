@@ -16,6 +16,7 @@ export async function getLogs() {
 
 	
 export async function postLog(data, isFormData = false) {
+	console.log(parserUrl);
   const options = {
     method: 'POST',
     body: data

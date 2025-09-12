@@ -13,18 +13,22 @@ function GenerateLogsButton() {
     return;
   }
 
+  // Generate filename with random suffix
+  const randomSuffix = Math.random().toString(36).substring(2,10);
+  const filename = `generated-log-${randomSuffix}.log`;
+
   const logText = logContent
     .map(([timestamp, level, message]) => `[${timestamp}] ${level}: ${message}`)
     .join("\n");
 
   const blob = new Blob([logText], { type: "text/plain" });
   const formData = new FormData();
-  formData.append("file", blob, "generated.log");
+  formData.append("file", blob, filename);
 
   try {
     const result = await postLog(formData, true); // true = e formData
     console.log('Log sent successfully:', result);
-    downloadLogFile(logContent);
+    downloadLogFile(logContent, filename);
   } catch (err) {
     console.error('Error sending logs:', err.message);
     alert('Log sending has failed.');
