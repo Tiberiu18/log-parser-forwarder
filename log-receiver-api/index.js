@@ -101,19 +101,19 @@ const logDir = path.join(process.cwd(), 'parsed_logs');
 
     // Extract timestamp
     const sorted = logFiles
-      .map(file => {
-        const match = file.match(/_(\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}(?:\.\d+)?Z)/);
-        const timestamp = match
-          ? match[1].replace(/T(\d{2})-(\d{2})-(\d{2})/, 'T$1:$2:$3')
-          : null;
+  .map(file => {
+    const match = file.match(/_(\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}(?:\.\d+)?(?:Z)?)/);
+    const timestamp = match
+      ? match[1].replace(/T(\d{2})-(\d{2})-(\d{2})/, 'T$1:$2:$3')
+      : null;
 
-        return {
-          name: file,
-          fullPath: path.join(logDir, file),
-          date: timestamp ? new Date(timestamp) : new Date(0)
-        };
-      })
-      .sort((a, b) => b.date - a.date);
+    return {
+      name: file,
+      fullPath: path.join(logDir, file),
+      date: timestamp ? new Date(timestamp) : new Date(0)
+    };
+  })
+  .sort((a, b) => b.date - a.date);
 
     const top3 = sorted.slice(0, 3);
 
