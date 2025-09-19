@@ -32,7 +32,7 @@ describe('LogViewer component', () => {
 
     render(<LogViewer />);
 
-    expect(await screen.findByText(/eroare/i)).toBeInTheDocument();
+    expect(await screen.findByText(/error/i)).toBeInTheDocument();
     expect(await screen.findByText(/Network error/i)).toBeInTheDocument();
   });
 });

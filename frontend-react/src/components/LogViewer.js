@@ -11,6 +11,7 @@ function LogViewer() {
       .then(data => {
         console.log('Received logs', data.logs);
         setLogs(data.logs);
+	setError(null); // reset the error message if it has succeeded
       })
       .catch(err => setError(err.message));
   };
@@ -24,7 +25,7 @@ function LogViewer() {
 return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
       <h2>Last three logs</h2>
-      {error && <p style={{ color: 'red' }}>Eroare: {error}</p>}
+      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
       <ul style={{ listStyle: 'none', padding: 0 }}>
         {logs.map((log, index) => (
           <li
